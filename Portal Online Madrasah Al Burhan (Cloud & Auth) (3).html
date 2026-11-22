@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madrasah Al Burhan — Portal Akademik & Mutaba'ah Online</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Amiri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                            950: '#022c22',
+                        },
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-emerald-200 selection:text-emerald-900">
+
+    <!-- Toast Notification Container (Pengganti alert()) -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-[70] flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- ========================================================================= -->
+    <!-- GERBANG LOGIN & REGISTRASI BERBASIS PERAN (AUTH SCREEN)                   -->
+    <!-- ========================================================================= -->
+    <section id="auth-gateway" class="min-h-screen bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 flex flex-col justify-center py-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <!-- Decorative Background Pattern -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-amber-400 blur-3xl"></div>
+            <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-emerald-400 blur-3xl"></div>
+        </div>
+
+        <div class="max-w-5xl w-full mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <!-- Left Branding & Info Column -->
+            <div class="lg:col-span-5 text-white space-y-5 text-center lg:text-left">
+                <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/15">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-emerald-950 shadow-md">
+                        <i data-lucide="book-open-check" class="w-6 h-6"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="font-bold text-lg tracking-tight block leading-none">Madrasah Al Burhan</span>
+                        <span class="font-arabic text-amber-300 text-sm">مدرسة البرهان للعلوم الشرعية</span>
+                    </div>
+                </div>
+
+                <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                    Portal Akademik, Mutaba'ah & Persiapan Termin <span class="text-amber-300">Al-Azhar</span>
+                </h1>
+                <p class="text-sm text-emerald-100/90 leading-relaxed">
+                    Terintegrasi secara <strong>Real-Time Cloud</strong> untuk memudahkan komunikasi ilmiah antara Asatidzah, Thalib (Mahasiswa), dan Orang Tua/Wali di mana pun berada.
+                </p>
+
+                <!-- Feature Highlights -->
+                <div class="grid grid-cols-2 gap-2.5 pt-2 text-left text-xs">
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-300 shrink-0"></i>
+                        <span>Absensi & Mutaba'ah Harian</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
+                        <i data-lucide="graduation-cap" class="w-4 h-4 text-amber-300 shrink-0"></i>
+                        <span>Tryout Termin Al-Azhar</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
+                        <i data-lucide="video" class="w-4 h-4 text-amber-300 shrink-0"></i>
+                        <span>Rekaman Dars & Kitab PDF</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
+                        <i data-lucide="award" class="w-4 h-4 text-amber-300 shrink-0"></i>
+                        <span>Student Portfolio & Syahadah</span>
+                    </div>
+                </div>
+
+                <!-- Cloud Status Pill on Auth Screen -->
+                <div class="pt-1 flex items-center justify-center lg:justify-start gap-2 text-xs">
+                    <span id="auth-cloud-status-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-900/90 border border-emerald-500/40 text-emerald-200">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Memeriksa Koneksi Cloud...</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Right Login / Register Card -->
+            <div class="lg:col-span-7">
+                <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 sm:p-8">
+                    <!-- Auth Mode Tabs -->
+                    <div class="grid grid-cols-2 gap-1.5 p-1.5 bg-slate-100 rounded-2xl mb-6">
+                        <button type="button" onclick="switchAuthTab('login')" id="auth-tab-login" class="py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-emerald-900 shadow-sm">
+                            Masuk ke Portal
+                        </button>
+                        <button type="button" onclick="switchAuthTab('register')" id="auth-tab-register" class="py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-500 hover:text-slate-800">
+                            Daftar Akun Baru
+                        </button>
+                    </div>
+
+                    <!-- FORM 1: LOGIN -->
+                    <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Pilih Peran Akun Anda</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="loginRole" value="ustadz" class="peer sr-only" checked>
+                                    <div class="p-2.5 rounded-xl border-2 border-slate-200 peer-checked:border-emerald-600 peer-checked:bg-emerald-50 text-center transition-all">
+                                        <i data-lucide="user-check" class="w-4 h-4 mx-auto text-emerald-700 mb-1"></i>
+                                        <span class="text-xs font-bold text-slate-800 block">Pengajar</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="loginRole" value="thalib" class="peer sr-only">
+                                    <div class="p-2.5 rounded-xl border-2 border-slate-200 peer-checked:border-emerald-600 peer-checked:bg-emerald-50 text-center transition-all">
+                                        <i data-lucide="graduation-cap" class="w-4 h-4 mx-auto text-emerald-700 mb-1"></i>
+                                        <span class="text-xs font-bold text-slate-800 block">Thalib</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="loginRole" value="ortu" class="peer sr-only">
+                                    <div class="p-2.5 rounded-xl border-2 border-slate-200 peer-checked:border-emerald-600 peer-checked:bg-emerald-50 text-center transition-all">
+                                        <i data-lucide="users" class="w-4 h-4 mx-auto text-emerald-700 mb-1"></i>
+                                        <span class="text-xs font-bold text-slate-800 block">Orang Tua</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Email / Nomor WhatsApp Terdaftar</label>
+                            <div class="relative">
+                                <i data-lucide="mail" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                                <input type="email" id="login-email" required placeholder="contoh: ustadz@alburhan.id" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi (Password)</label>
+                            <div class="relative">
+                                <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                                <input type="password" id="login-password" required placeholder="Masukkan kata sandi..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="log-in" class="w-4 h-4"></i>
+                            <span>Masuk ke Portal Madrasah</span>
+                        </button>
+                    </form>
+
+                    <!-- FORM 2: REGISTER -->
+                    <form id="register-form" onsubmit="handleRegisterSubmit(event)" class="hidden space-y-3.5">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Daftar Sebagai</label>
+                            <select id="reg-role" onchange="toggleRegisterRoleFields()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm font-semibold bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <option value="thalib">Thalib / Mahasiswa Al-Azhar</option>
+                                <option value="ortu">Orang Tua / Wali Mahasiswa</option>
+                                <option value="ustadz">Pengajar / Asatidzah (Memerlukan Kode Akses)</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap</label>
+                                <input type="text" id="reg-name" required placeholder="Nama lengkap..." class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Email Aktif</label>
+                                <input type="email" id="reg-email" required placeholder="nama@email.com" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                        </div>
+
+                        <!-- Conditional Fields: Thalib -->
+                        <div id="reg-thalib-fields" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Fakultas / Tingkat (Al-Azhar)</label>
+                                <input type="text" id="reg-university" value="Syariah Islamiyah — Tingkat 1" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Orang Tua / Wali</label>
+                                <input type="text" id="reg-wali-name" placeholder="Bapak / Ibu..." class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                        </div>
+
+                        <!-- Conditional Fields: Orang Tua -->
+                        <div id="reg-ortu-fields" class="hidden">
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Pilih / Tautkan Akun Putra-Putri (Thalib)</label>
+                            <select id="reg-linked-student" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <!-- Populated via JS -->
+                            </select>
+                        </div>
+
+                        <!-- Conditional Fields: Ustadz -->
+                        <div id="reg-ustadz-fields" class="hidden">
+                            <label class="block text-xs font-bold text-amber-800 mb-1">Kode Akses Pengajar Madrasah (Default: ALBURHAN2026)</label>
+                            <input type="text" id="reg-ustadz-code" placeholder="Masukkan kode verifikasi pengajar..." class="w-full rounded-xl border border-amber-300 px-3.5 py-2 text-sm bg-amber-50/60 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Buat Kata Sandi (Min. 6 karakter)</label>
+                            <input type="password" id="reg-password" required minlength="6" placeholder="••••••••" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+
+                        <button type="submit" class="w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i>
+                            <span>Buat Akun & Masuk Otomatis</span>
+                        </button>
+                    </form>
+
+                    <!-- Divider: Quick Demo Cloud Access -->
+                    <div class="mt-6 pt-5 border-t border-slate-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Masuk Cepat Akun Demo Cloud (1-Klik)</span>
+                            <button type="button" onclick="openCloudSettingsModal()" class="text-[11px] font-semibold text-emerald-700 hover:underline flex items-center gap-1">
+                                <i data-lucide="cloud-cog" class="w-3.5 h-3.5"></i>
+                                <span>Setup Firebase</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <button type="button" onclick="quickDemoLogin('ustadz')" class="p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-left transition-all group">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-emerald-950">Ustadz Abdullah</span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-emerald-600 group-hover:translate-x-0.5 transition-transform"></i>
+                                </div>
+                                <span class="text-[10px] text-emerald-700 block mt-0.5">Peran: Pengajar / Admin</span>
+                            </button>
+                            <button type="button" onclick="quickDemoLogin('thalib', 's1')" class="p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-left transition-all group">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-amber-950">Ahmad Fauzan</span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-amber-600 group-hover:translate-x-0.5 transition-transform"></i>
+                                </div>
+                                <span class="text-[10px] text-amber-800 block mt-0.5">Thalib (Status: Lunas)</span>
+                            </button>
+                            <button type="button" onclick="quickDemoLogin('ortu', 's2')" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-left transition-all group">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-slate-900">Wali Zaid Al-Khair</span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-600 group-hover:translate-x-0.5 transition-transform"></i>
+                                </div>
+                                <span class="text-[10px] text-slate-600 block mt-0.5">Orang Tua (Belum Bayar)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MAIN PORTAL APPLICATION (HIDDEN UNTIL AUTHENTICATED)                      -->
+    <!-- ========================================================================= -->
+    <div id="portal-app" class="hidden">
+        <!-- Top Header Bar: Brand, Cloud Status, Notification Bell & User Profile -->
+        <header class="bg-emerald-950 text-white border-b border-emerald-800 sticky top-0 z-40 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
+                <!-- Brand Logo -->
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center border border-amber-400/50 shadow-inner">
+                        <i data-lucide="book-open-check" class="w-5 h-5 text-amber-300"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold tracking-tight text-base sm:text-lg text-white">Madrasah Al Burhan</span>
+                            <span class="hidden md:inline-block font-arabic text-amber-300 text-sm">مدرسة البرهان</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="header-cloud-indicator" class="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-300">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span>Cloud Real-Time Aktif</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Controls: Quick Role Switcher (Demo), Notification Bell, Cloud Config, Logout -->
+                <div class="flex items-center gap-2 sm:gap-2.5">
+                    <!-- Quick Demo Role Switcher (Useful for testing multi-role sync) -->
+                    <div class="hidden xl:flex items-center gap-1 bg-emerald-900/80 p-1 rounded-xl border border-emerald-800">
+                        <span class="text-[10px] text-emerald-300 px-1.5">Uji Peran:</span>
+                        <button onclick="quickDemoLogin('ustadz')" id="hdr-role-ustadz" class="px-2 py-1 rounded-lg text-[11px] font-semibold transition-all">Pengajar</button>
+                        <button onclick="quickDemoLogin('thalib', appState.activeStudentId)" id="hdr-role-thalib" class="px-2 py-1 rounded-lg text-[11px] font-semibold transition-all">Thalib</button>
+                        <button onclick="quickDemoLogin('ortu', appState.activeStudentId)" id="hdr-role-ortu" class="px-2 py-1 rounded-lg text-[11px] font-semibold transition-all">Wali</button>
+                    </div>
+
+                    <!-- Student Switcher for Ustadz/Ortu if needed -->
+                    <div id="student-selector-wrapper" class="hidden items-center gap-1">
+                        <select id="active-student-select" onchange="changeActiveStudent(this.value)" class="bg-emerald-900 text-white text-xs rounded-xl px-2.5 py-1.5 border border-emerald-700 focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer">
+                        </select>
+                    </div>
+
+                    <!-- Notification Center Bell Button -->
+                    <button onclick="switchTab('notifikasi')" title="Notification Center" class="relative p-2 rounded-xl bg-emerald-900/90 hover:bg-emerald-800 border border-emerald-700/80 text-emerald-100 transition-colors">
+                        <i data-lucide="bell" class="w-4 h-4"></i>
+                        <span id="header-notif-badge" class="hidden absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">0</span>
+                    </button>
+
+                    <!-- Cloud Settings Button (Ustadz/Admin) -->
+                    <button id="btn-header-cloud-setup" onclick="openCloudSettingsModal()" title="Pengaturan Cloud & Publikasi" class="p-2 rounded-xl bg-emerald-900/90 hover:bg-emerald-800 border border-emerald-700/80 text-amber-300 transition-colors">
+                        <i data-lucide="cloud" class="w-4 h-4"></i>
+                    </button>
+
+                    <!-- Logout Button -->
+                    <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-rose-600/90 hover:bg-rose-600 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors">
+                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                        <span class="hidden sm:inline">Keluar</span>
+                    </button>
+
+                    <!-- Mobile Nav Toggle -->
+                    <button id="mobile-menu-btn" onclick="toggleMobileNav()" class="md:hidden p-2 rounded-xl bg-emerald-900 text-emerald-100 hover:bg-emerald-800">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs (All 11 Modules Accessible) -->
+            <nav id="main-nav" class="hidden md:block bg-white text-slate-700 border-b border-slate-200 shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between py-2 md:py-0">
+                        <div class="flex flex-col md:flex-row md:flex-wrap md:gap-1 py-1.5">
+                            <button onclick="switchTab('dashboard')" data-tab="dashboard" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+                                <span>Dashboard & Jadwal</span>
+                            </button>
+                            <button onclick="switchTab('absensi')" data-tab="absensi" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i>
+                                <span>Absensi Dars</span>
+                            </button>
+                            <button onclick="switchTab('mutabaah')" data-tab="mutabaah" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="check-square" class="w-3.5 h-3.5"></i>
+                                <span>Mutaba'ah</span>
+                            </button>
+                            <button onclick="switchTab('ujian')" data-tab="ujian" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="file-check-2" class="w-3.5 h-3.5"></i>
+                                <span>Ujian & Tryout Azhar</span>
+                            </button>
+                            <button onclick="switchTab('portfolio')" data-tab="portfolio" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                                <span>Student Portfolio</span>
+                            </button>
+                            <button onclick="switchTab('library')" data-tab="library" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="library" class="w-3.5 h-3.5"></i>
+                                <span>Digital Library</span>
+                            </button>
+                            <button onclick="switchTab('video')" data-tab="video" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="video" class="w-3.5 h-3.5"></i>
+                                <span>Rekaman Dars</span>
+                            </button>
+                            <button onclick="switchTab('catatan')" data-tab="catatan" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                                <span>Catatan Dars</span>
+                            </button>
+                            <button onclick="switchTab('tanyajawab')" data-tab="tanyajawab" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="message-circle-question" class="w-3.5 h-3.5"></i>
+                                <span>Kotak Soal</span>
+                                <span id="unanswered-badge" class="hidden px-1.5 py-0.2 text-[10px] font-bold bg-amber-500 text-white rounded-full">0</span>
+                            </button>
+                            <button onclick="switchTab('pembayaran')" data-tab="pembayaran" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+                                <span>Pembayaran SPP</span>
+                                <span id="payment-nav-badge" class="hidden px-1.5 py-0.2 text-[10px] font-bold bg-rose-500 text-white rounded-full">!</span>
+                            </button>
+                            <button onclick="switchTab('notifikasi')" data-tab="notifikasi" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap">
+                                <i data-lucide="bell-ring" class="w-3.5 h-3.5"></i>
+                                <span>Notification Center</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content Wrapper -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+            
+            <!-- Context User Banner -->
+            <div class="mb-6 rounded-2xl p-4 sm:p-5 bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white shadow-lg relative overflow-hidden">
+                <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/20 border border-amber-300/30 text-amber-200 text-xs font-medium mb-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse"></span>
+                            <span id="banner-role-badge">Akses Pengajar / Ustadz</span>
+                        </div>
+                        <h1 id="banner-greeting" class="text-xl sm:text-2xl font-bold text-white">Ahlan wa Sahlan</h1>
+                        <p id="banner-subtitle" class="text-xs sm:text-sm text-emerald-100 mt-1">Portal terintegrasi Madrasah Al Burhan.</p>
+                    </div>
+                    <div id="banner-action-area" class="flex flex-wrap items-center gap-2 shrink-0"></div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- TAB 1: DASHBOARD & PENGINGAT JADWAL DARS                  -->
+            <!-- ========================================================= -->
+            <section id="tab-dashboard" class="tab-section space-y-6">
+                <div id="dashboard-payment-alert" class="hidden"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="dashboard-stats-grid"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+                                <div>
+                                    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                        <i data-lucide="calendar-clock" class="w-5 h-5 text-emerald-600"></i>
+                                        <span>Jadwal & Pengingat Dars</span>
+                                    </h2>
+                                    <p class="text-xs text-slate-500 mt-0.5">Jadwal kajian rutin yang tersinkronisasi real-time</p>
+                                </div>
+                                <button id="btn-open-schedule-modal" onclick="openModal('schedule-modal')" class="hidden inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-sm">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                    <span>Atur Jadwal Dars</span>
+                                </button>
+                            </div>
+                            <div id="next-dars-reminder" class="mb-5 p-4 rounded-xl bg-amber-50 border border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3"></div>
+                            <div id="schedule-list" class="space-y-3"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i>
+                                    <span id="dash-mutabaah-title">Mutaba'ah Hari Ini</span>
+                                </h3>
+                                <button onclick="switchTab('mutabaah')" class="text-xs font-semibold text-emerald-600 hover:text-emerald-700">Detail →</button>
+                            </div>
+                            <div id="dash-mutabaah-content" class="space-y-2.5"></div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                                    <i data-lucide="book-marked" class="w-4 h-4 text-emerald-600"></i>
+                                    <span>Catatan Dars Terbaru</span>
+                                </h3>
+                                <button onclick="switchTab('catatan')" class="text-xs font-semibold text-emerald-600 hover:text-emerald-700">Semua →</button>
+                            </div>
+                            <div id="dash-notes-content" class="space-y-2.5"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 2: ABSENSI FLEKSIBEL PER ANAK                         -->
+            <!-- ========================================================= -->
+            <section id="tab-absensi" class="tab-section hidden space-y-6">
+                <div id="absensi-ustadz-view" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                    <i data-lucide="clipboard-edit" class="w-5 h-5 text-emerald-600"></i>
+                                    <span>Input Absensi Fleksibel Per Sesi Dars</span>
+                                </h2>
+                                <p class="text-xs sm:text-sm text-slate-500 mt-1">Pilih sesi dars untuk mencatat kehadiran thalib secara real-time.</p>
+                            </div>
+                            <button onclick="openModal('schedule-modal')" class="px-3.5 py-2 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-semibold flex items-center gap-1.5">
+                                <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                                <span>+ Jadwal Sesi Baru</span>
+                            </button>
+                        </div>
+                        <div class="my-5 grid grid-cols-1 md:grid-cols-3 gap-4 items-end bg-slate-50 p-4 rounded-xl border border-slate-200/70">
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1.5">Pilih Jadwal & Sesi Dars:</label>
+                                <select id="attendance-session-select" onchange="renderAttendanceForm()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"></select>
+                            </div>
+                            <button onclick="markAllPresent()" class="w-full py-2.5 px-4 bg-white hover:bg-emerald-50 text-emerald-700 border border-emerald-300 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5">
+                                <i data-lucide="check-check" class="w-4 h-4"></i>
+                                <span>Tandai Semua Hadir</span>
+                            </button>
+                        </div>
+                        <div id="attendance-recording-list" class="space-y-3"></div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                            <p class="text-xs text-slate-500">Data tersinkronisasi otomatis ke akun Thalib & Orang Tua.</p>
+                            <button onclick="saveAttendanceNotify()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-sm flex items-center gap-2">
+                                <i data-lucide="save" class="w-4 h-4"></i>
+                                <span>Simpan & Sinkronkan</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="absensi-monitoring-view" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                    <i data-lucide="user-check" class="w-5 h-5 text-emerald-600"></i>
+                                    <span id="monitoring-absensi-title">Laporan Kehadiran Thalib</span>
+                                </h2>
+                                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Rekap kehadiran per pertemuan dars secara real-time.</p>
+                            </div>
+                            <div id="attendance-percentage-badge" class="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold">Kehadiran: 100%</div>
+                        </div>
+                        <div id="attendance-summary-pills" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6"></div>
+                        <h3 class="text-sm font-bold text-slate-700 mb-3">Riwayat Pertemuan Dars</h3>
+                        <div id="student-attendance-history" class="space-y-2.5"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 3: CHECKLIST MUTABA'AH YAUMIYAH                       -->
+            <!-- ========================================================= -->
+            <section id="tab-mutabaah" class="tab-section hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <i data-lucide="list-checks" class="w-5 h-5 text-emerald-600"></i>
+                                <span>Mutaba'ah Yaumiyah (Checklist Kegiatan Wajib)</span>
+                            </h2>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">1. One Day One Juz • 2. Mudzakarah Dars • 3. Setoran Wajib Hafalan (Min. 1 Hal) • 4. Pergi Kuliah</p>
+                        </div>
+                        <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold">
+                            <i data-lucide="calendar" class="w-4 h-4 text-emerald-600"></i>
+                            <span id="mutabaah-today-date">Hari Ini</span>
+                        </div>
+                    </div>
+
+                    <div id="mutabaah-single-view" class="mt-6 space-y-6">
+                        <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-50 to-amber-50/60 border border-emerald-200/70">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-bold text-emerald-950" id="mutabaah-student-label">Progres Harian</span>
+                                <span class="text-sm font-extrabold text-emerald-700" id="mutabaah-progress-text">0 / 4 Selesai (0%)</span>
+                            </div>
+                            <div class="w-full h-3 bg-white rounded-full overflow-hidden border border-emerald-200/80 p-0.5">
+                                <div id="mutabaah-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                            <p id="mutabaah-role-hint" class="text-xs text-slate-600 mt-2.5"></p>
+                        </div>
+                        <div id="mutabaah-checklist-cards" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    </div>
+
+                    <div id="mutabaah-ustadz-overview" class="hidden mt-6 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-700">Rekap Checklist Seluruh Thalib Hari Ini</h3>
+                        <div id="mutabaah-all-students-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 4: UJIAN ONLINE & TRYOUT TERMIN AL-AZHAR              -->
+            <!-- ========================================================= -->
+            <section id="tab-ujian" class="tab-section hidden space-y-6">
+                <!-- Active Exam Runner View -->
+                <div id="exam-runner-container" class="hidden bg-white rounded-2xl border-2 border-emerald-500 shadow-lg p-5 sm:p-6 space-y-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                        <div>
+                            <span id="runner-exam-badge" class="px-2.5 py-0.5 rounded-md bg-amber-100 text-amber-900 text-xs font-bold uppercase">Tryout Termin Al-Azhar</span>
+                            <h2 id="runner-exam-title" class="text-lg font-bold text-slate-800 mt-1">Judul Ujian</h2>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="px-4 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 font-mono font-bold text-sm flex items-center gap-2">
+                                <i data-lucide="timer" class="w-4 h-4 text-rose-600 animate-pulse"></i>
+                                <span id="exam-timer-display">15:00</span>
+                            </div>
+                            <button onclick="cancelActiveExam()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold">Keluar</button>
+                        </div>
+                    </div>
+                    <div id="exam-questions-render" class="space-y-5"></div>
+                    <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
+                        <span class="text-xs text-slate-500">Pastikan seluruh soal telah dijawab sebelum menekan tombol kumpulkan.</span>
+                        <button onclick="submitActiveExam()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-md flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            <span>Kumpulkan & Lihat Nilai</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Exam Hub (Catalog, Bank Soal, Riwayat Nilai) -->
+                <div id="exam-hub-container" class="space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                    <i data-lucide="file-check-2" class="w-5 h-5 text-emerald-600"></i>
+                                    <span>Ujian Online, Latihan & Tryout Termin Al-Azhar</span>
+                                </h2>
+                                <p class="text-xs sm:text-sm text-slate-500 mt-1">Bank soal terkurasi per maddah dengan penilaian otomatis dan riwayat nilai.</p>
+                            </div>
+                            <button id="btn-add-question-bank" onclick="openModal('question-bank-modal')" class="hidden px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm flex items-center gap-1.5">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                                <span>+ Tambah Bank Soal</span>
+                            </button>
+                        </div>
+
+                        <!-- Available Exams / Tryouts Grid -->
+                        <h3 class="text-sm font-bold text-slate-700 mt-5 mb-3">Paket Ujian & Tryout Tersedia</h3>
+                        <div id="exam-packages-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
+
+                    <!-- Exam Results & History -->
+                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                        <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-amber-500"></i>
+                            <span>Riwayat Hasil Ujian & Tryout</span>
+                        </h3>
+                        <div id="exam-results-list" class="space-y-3"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 5: STUDENT PORTFOLIO & SERTIFIKAT / SYAHADAH          -->
+            <!-- ========================================================= -->
+            <section id="tab-portfolio" class="tab-section hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <i data-lucide="award" class="w-5 h-5 text-amber-500"></i>
+                                <span id="portfolio-header-title">Student Portfolio & Rekam Jejak Akademik</span>
+                            </h2>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">Rekapitulasi maddah, nilai ujian, capaian hafalan, dan syahadah kelulusan.</p>
+                        </div>
+                        <button id="btn-grant-certificate" onclick="openModal('certificate-modal')" class="hidden px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl shadow-sm flex items-center gap-1.5">
+                            <i data-lucide="medal" class="w-4 h-4"></i>
+                            <span>+ Terbitkan Sertifikat / Pencapaian</span>
+                        </button>
+                    </div>
+
+                    <!-- Student Selector inside Portfolio for Ustadz -->
+                    <div id="portfolio-ustadz-student-bar" class="hidden mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                        <span class="text-xs font-bold text-slate-600">Pilih Portfolio Thalib:</span>
+                        <select id="portfolio-student-select" onchange="changeActiveStudent(this.value)" class="bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800"></select>
+                    </div>
+
+                    <!-- Portfolio Profile & Metrics -->
+                    <div id="portfolio-content-area" class="mt-6 space-y-6"></div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 6: AL BURHAN DIGITAL LIBRARY                          -->
+            <!-- ========================================================= -->
+            <section id="tab-library" class="tab-section hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <i data-lucide="library" class="w-5 h-5 text-emerald-600"></i>
+                                <span>Al Burhan Digital Library</span>
+                            </h2>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">Perpustakaan kitab turats PDF, diktat kuliah Al-Azhar, dan rangkuman ilmiah terkurasi.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <input type="text" id="library-search-input" oninput="renderLibrary()" placeholder="Cari kitab / pengarang..." class="px-3.5 py-2 text-xs border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <button id="btn-add-library" onclick="openModal('library-modal')" class="hidden px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm flex items-center gap-1.5">
+                                <i data-lucide="book-plus" class="w-4 h-4"></i>
+                                <span>+ Tambah Kitab / PDF</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="library-grid" class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 7: REKAMAN DARS (PAYMENT UNLOCK)                      -->
+            <!-- ========================================================= -->
+            <section id="tab-video" class="tab-section hidden space-y-6">
+                <div id="video-access-banner" class="rounded-2xl border p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm"></div>
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="filterVideos('Semua')" data-maddah="Semua" class="vid-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white">Semua Maddah</button>
+                            <button onclick="filterVideos('Fiqh')" data-maddah="Fiqh" class="vid-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600">Fiqh</button>
+                            <button onclick="filterVideos('Aqidah')" data-maddah="Aqidah" class="vid-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600">Aqidah</button>
+                            <button onclick="filterVideos('Nahwu')" data-maddah="Nahwu" class="vid-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600">Nahwu</button>
+                            <button onclick="filterVideos('Hadits')" data-maddah="Hadits" class="vid-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600">Hadits</button>
+                        </div>
+                        <button id="btn-add-video" onclick="openModal('video-upload-modal')" class="hidden inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-sm">
+                            <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+                            <span>Drop Rekaman Dars</span>
+                        </button>
+                    </div>
+                    <div id="video-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 8: DROP CATATAN DARS                                  -->
+            <!-- ========================================================= -->
+            <section id="tab-catatan" class="tab-section hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <i data-lucide="notebook-pen" class="w-5 h-5 text-emerald-600"></i>
+                                <span>Arsip & Drop Catatan Dars</span>
+                            </h2>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">Ringkasan materi kajian dan faedah kitab per pertemuan.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2.5">
+                            <input type="text" id="notes-search-input" oninput="renderNotes()" placeholder="Cari judul / maddah..." class="px-3.5 py-2 text-xs border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <button onclick="openModal('note-modal')" class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-sm">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                                <span>Drop Catatan Baru</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="notes-grid" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 9: KOTAK SOAL (TANYA JAWAB)                           -->
+            <!-- ========================================================= -->
+            <section id="tab-tanyajawab" class="tab-section hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-1">
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sticky top-24">
+                            <h2 class="text-base font-bold text-slate-800 mb-1">Kotak Soal & Konsultasi</h2>
+                            <p class="text-xs text-slate-500 mb-4">Kirim pertanyaan secara anonim atau terbuka kepada pengajar.</p>
+                            <form id="qa-form" onsubmit="submitQuestion(event)" class="space-y-3.5">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Maddah / Topik</label>
+                                    <select id="qa-maddah" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-slate-50">
+                                        <option value="Fiqh Ibadah">Fiqh Ibadah</option>
+                                        <option value="Aqidah">Aqidah</option>
+                                        <option value="Nahwu & Sharaf">Nahwu & Sharaf</option>
+                                        <option value="Tafsir & Al-Qur'an">Tafsir & Al-Qur'an</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Pertanyaan</label>
+                                    <textarea id="qa-question-text" rows="4" required placeholder="Tuliskan pertanyaan Anda..." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-slate-50"></textarea>
+                                </div>
+                                <label class="flex items-center justify-between p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 cursor-pointer">
+                                    <span class="text-xs font-semibold text-emerald-950">Kirim sebagai Anonim</span>
+                                    <input type="checkbox" id="qa-anonymous" checked class="w-4 h-4 accent-emerald-600">
+                                </label>
+                                <button type="submit" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-sm">Kirim Pertanyaan</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-base font-bold text-slate-800">Arsip Tanya Jawab Madrasah</h3>
+                                <select id="qa-filter" onchange="renderQA()" class="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-slate-50 font-medium">
+                                    <option value="all">Semua Pertanyaan</option>
+                                    <option value="answered">Sudah Dijawab</option>
+                                    <option value="unanswered">Menunggu Jawaban</option>
+                                </select>
+                            </div>
+                            <div id="qa-list" class="space-y-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 10: PEMBAYARAN & PENGINGAT SPP                        -->
+            <!-- ========================================================= -->
+            <section id="tab-pembayaran" class="tab-section hidden space-y-6">
+                <div id="payment-ustadz-view" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800">Manajemen Infaq Syahriyah / SPP Madrasah</h2>
+                                <p class="text-xs text-slate-500 mt-1">Verifikasi pembayaran untuk membuka otomatis akses video dars dan kirim pengingat WhatsApp.</p>
+                            </div>
+                            <button onclick="openPaymentSettingsModal()" class="px-4 py-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">Atur Nominal & Rekening</button>
+                        </div>
+                        <div id="payment-admin-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-5"></div>
+                        <div id="payment-students-list" class="space-y-3"></div>
+                    </div>
+                </div>
+
+                <div id="payment-family-view" class="hidden space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 space-y-6">
+                            <div id="family-bill-card" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6"></div>
+                            <div class="bg-gradient-to-br from-emerald-900 to-teal-950 text-white rounded-2xl p-5 sm:p-6 shadow-md">
+                                <p class="text-xs font-bold uppercase text-amber-300 mb-2">Rekening Resmi Madrasah Al Burhan</p>
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/10 rounded-xl p-4">
+                                    <div>
+                                        <p class="text-xs text-emerald-200" id="display-bank-name">Bank Syariah Indonesia (BSI)</p>
+                                        <p class="text-xl font-mono font-bold text-white mt-0.5" id="display-bank-account">7148 9920 11</p>
+                                        <p class="text-xs text-amber-200 mt-1" id="display-bank-holder">a.n. Yayasan Pendidikan Madrasah Al Burhan</p>
+                                    </div>
+                                    <button onclick="copyBankAccount()" class="px-4 py-2.5 rounded-xl bg-amber-400 text-emerald-950 text-xs font-bold">Salin Rekening</button>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+                                <h3 class="text-base font-bold text-slate-800 mb-3">Riwayat Pembayaran</h3>
+                                <div id="family-payment-history" class="space-y-2.5"></div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-1">
+                            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+                                <h3 class="text-base font-bold text-slate-800 mb-3">Konfirmasi Transfer</h3>
+                                <form onsubmit="submitPaymentConfirmation(event)" class="space-y-3">
+                                    <input type="text" id="pay-period-input" readonly class="w-full rounded-xl border border-slate-200 bg-slate-100 px-3 py-2 text-xs font-bold">
+                                    <input type="number" id="pay-amount-input" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                                    <input type="date" id="pay-date-input" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                                    <input type="text" id="pay-sender-input" required placeholder="Nama Pengirim & Bank..." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                                    <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl">Kirim Konfirmasi</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 11: NOTIFICATION CENTER & PENGINGAT OTOMATIS          -->
+            <!-- ========================================================= -->
+            <section id="tab-notifikasi" class="tab-section hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <i data-lucide="bell-ring" class="w-5 h-5 text-emerald-600"></i>
+                                <span>Notification Center & Pengingat Otomatis</span>
+                            </h2>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">Pusat pengumuman real-time serta pengingat otomatis ke WhatsApp & Email.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="markAllNotificationsRead()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">Tandai Semua Dibaca</button>
+                            <button id="btn-broadcast-notif" onclick="openModal('broadcast-modal')" class="hidden px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm flex items-center gap-1.5">
+                                <i data-lucide="megaphone" class="w-4 h-4"></i>
+                                <span>+ Kirim Pengumuman & Broadcast WA</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="notification-center-list" class="mt-5 space-y-3"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODALS                                                                    -->
+    <!-- ========================================================================= -->
+
+    <!-- Modal Pengaturan Cloud Firebase & Panduan Publikasi -->
+    <div id="cloud-settings-modal" class="fixed inset-0 z-[60] hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-100 my-8">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                    <i data-lucide="cloud-cog" class="w-5 h-5 text-emerald-600"></i>
+                    <span>Konfigurasi Database Cloud (Firebase) & Publikasi</span>
+                </h3>
+                <button onclick="closeModal('cloud-settings-modal')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="mt-4 space-y-4 text-xs text-slate-600">
+                <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 space-y-1">
+                    <p class="font-bold">Cara Menghubungkan ke Proyek Firebase Pribadi Madrasah:</p>
+                    <ol class="list-decimal list-inside space-y-1 text-[11px] text-emerald-800">
+                        <li>Buka <strong>console.firebase.google.com</strong> → Buat Proyek Baru → Aktifkan <strong>Authentication (Email/Password & Anonymous)</strong> dan <strong>Cloud Firestore</strong>.</li>
+                        <li>Salin objek <code class="bg-white px-1 rounded">firebaseConfig</code> dari Project Settings Anda lalu tempelkan di bawah ini.</li>
+                        <li>Unggah file HTML tunggal ini ke <strong>Netlify Drop</strong> atau <strong>Vercel</strong> untuk langsung mendapatkan tautan web online gratis.</li>
+                    </ol>
+                </div>
+
+                <form onsubmit="saveCustomFirebaseConfig(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Tempel JSON Firebase Config (Opsional)</label>
+                        <textarea id="firebase-config-textarea" rows="5" placeholder='{"apiKey": "AIzaSy...", "authDomain": "madrasah-alburhan.firebaseapp.com", "projectId": "madrasah-alburhan", ...}' class="w-full rounded-xl border border-slate-300 p-3 font-mono text-[11px] bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                    </div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+                        <button type="button" onclick="resetCustomFirebaseConfig()" class="px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50">Gunakan Mode Bawaan</button>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="closeModal('cloud-settings-modal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100">Tutup</button>
+                            <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">Simpan & Hubungkan Cloud</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Jadwal Dars -->
+    <div id="schedule-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base">Atur Jadwal Dars Fleksibel</h3>
+                <button onclick="closeModal('schedule-modal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="addNewSchedule(event)" class="space-y-3 mt-4">
+                <input type="text" id="sched-maddah" required placeholder="Nama Maddah / Kitab" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" id="sched-day" required placeholder="Hari, Tanggal" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                    <input type="text" id="sched-time" required placeholder="Jam Mengajar" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                </div>
+                <input type="text" id="sched-ustadz" required value="Ustadz Abdullah, Lc." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <input type="text" id="sched-room" required value="Majelis Utama Al-Burhan" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('schedule-modal')" class="px-4 py-2 text-xs font-semibold text-slate-600">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl">Simpan Jadwal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Drop Catatan -->
+    <div id="note-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base">Drop Catatan / Faedah Dars</h3>
+                <button onclick="closeModal('note-modal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="addNewNote(event)" class="space-y-3 mt-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <select id="note-maddah" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white">
+                        <option value="Fiqh">Fiqh</option>
+                        <option value="Aqidah">Aqidah</option>
+                        <option value="Nahwu">Nahwu</option>
+                        <option value="Hadits">Hadits</option>
+                    </select>
+                    <input type="text" id="note-author" required value="Ustadz Abdullah, Lc." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                </div>
+                <input type="text" id="note-title" required placeholder="Judul Pembahasan" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <textarea id="note-content" rows="4" required placeholder="Isi ringkasan materi..." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"></textarea>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('note-modal')" class="px-4 py-2 text-xs font-semibold text-slate-600">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl">Publikasikan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Upload Video Dars -->
+    <div id="video-upload-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base">Drop Rekaman Video Dars</h3>
+                <button onclick="closeModal('video-upload-modal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="addNewVideo(event)" class="space-y-3 mt-4">
+                <select id="vid-maddah" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white">
+                    <option value="Fiqh">Fiqh</option>
+                    <option value="Aqidah">Aqidah</option>
+                    <option value="Nahwu">Nahwu</option>
+                    <option value="Hadits">Hadits</option>
+                </select>
+                <input type="text" id="vid-title" required placeholder="Judul Kajian" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" id="vid-ustadz" required value="Ustadz Abdullah, Lc." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                    <input type="text" id="vid-duration" required value="45:00" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                </div>
+                <textarea id="vid-desc" rows="3" required placeholder="Deskripsi materi..." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"></textarea>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('video-upload-modal')" class="px-4 py-2 text-xs font-semibold text-slate-600">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl">Unggah Rekaman</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Video Player -->
+    <div id="video-player-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl">
+            <div class="bg-emerald-950 text-white px-5 py-3.5 flex items-center justify-between">
+                <h3 id="player-title" class="font-bold text-sm truncate">Judul Video</h3>
+                <button onclick="closeModal('video-player-modal')" class="text-emerald-200 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="aspect-video bg-slate-900 flex flex-col items-center justify-center text-center p-6 text-white">
+                <p class="font-arabic text-2xl text-amber-300 mb-2">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p>
+                <h4 id="player-overlay-title" class="font-bold text-lg">Memutar Rekaman Dars</h4>
+                <p id="player-overlay-ustadz" class="text-xs text-emerald-200 mt-1"></p>
+            </div>
+            <div class="p-4 flex justify-between items-center">
+                <p id="player-desc" class="text-xs text-slate-600"></p>
+                <button onclick="closeModal('video-player-modal')" class="px-4 py-1.5 bg-slate-100 rounded-xl text-xs font-semibold shrink-0 ml-3">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Bank Soal Ujian -->
+    <div id="question-bank-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base">Tambah Soal ke Bank Soal Ujian</h3>
+                <button onclick="closeModal('question-bank-modal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="addQuestionToBank(event)" class="space-y-3 mt-4">
+                <select id="qb-exam-id" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white"></select>
+                <textarea id="qb-question" rows="2" required placeholder="Tulis pertanyaan soal..." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"></textarea>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="qb-opt-0" required placeholder="Pilihan A" class="rounded-xl border border-slate-300 px-3 py-1.5 text-xs">
+                    <input type="text" id="qb-opt-1" required placeholder="Pilihan B" class="rounded-xl border border-slate-300 px-3 py-1.5 text-xs">
+                    <input type="text" id="qb-opt-2" required placeholder="Pilihan C" class="rounded-xl border border-slate-300 px-3 py-1.5 text-xs">
+                    <input type="text" id="qb-opt-3" required placeholder="Pilihan D" class="rounded-xl border border-slate-300 px-3 py-1.5 text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Kunci Jawaban Benar</label>
+                    <select id="qb-correct" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs bg-white">
+                        <option value="0">Pilihan A</option>
+                        <option value="1">Pilihan B</option>
+                        <option value="2">Pilihan C</option>
+                        <option value="3">Pilihan D</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('question-bank-modal')" class="px-4 py-2 text-xs font-semibold text-slate-600">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl">Simpan ke Bank Soal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Terbitkan Sertifikat / Pencapaian -->
+    <div id="certificate-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base">Terbitkan Sertifikat / Syahadah</h3>
+                <button onclick="closeModal('certificate-modal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="issueStudentCertificate(event)" class="space-y-3 mt-4">
+                <select id="cert-student-id" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white"></select>
+                <input type="text" id="cert-title" required placeholder="Contoh: Syahadah Mutqin Matan Al-Ajurumiyah" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <input type="text" id="cert-predicate" required value="Mumtaz (Istimewa)" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('certificate-modal')" class="px-4 py-2 text-xs font-semibold text-slate-600">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-500 text-white text-xs font-bold rounded-xl">Terbitkan Sertifikat</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Digital Library -->
+    <div id="library-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base">Tambah Kitab / Referensi Digital</h3>
+                <button onclick="closeModal('library-modal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="addLibraryItem(event)" class="space-y-3 mt-4">
+                <select id="lib-category" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white">
+                    <option value="Kitab Turats PDF">Kitab Turats PDF</option>
+                    <option value="Muqarrar Al-Azhar">Muqarrar Al-Azhar</option>
+                    <option value="Rangkuman & Syarah">Rangkuman & Syarah</option>
+                </select>
+                <input type="text" id="lib-title" required placeholder="Judul Kitab / Diktat" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <input type="text" id="lib-author" required placeholder="Penulis / Muallif" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <textarea id="lib-desc" rows="3" required placeholder="Deskripsi singkat kitab..." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"></textarea>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('library-modal')" class="px-4 py-2 text-xs font-semibold text-slate-600">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl">Simpan ke Perpustakaan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Broadcast Pengumuman & WA -->
+    <div id="broadcast-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base">Kirim Pengumuman & Broadcast</h3>
+                <button onclick="closeModal('broadcast-modal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="sendBroadcastNotification(event)" class="space-y-3 mt-4">
+                <select id="bc-type" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white">
+                    <option value="Pengumuman">Pengumuman Madrasah</option>
+                    <option value="Jadwal Dars">Perubahan Jadwal Dars</option>
+                    <option value="Ujian & Tryout">Info Tryout Termin Al-Azhar</option>
+                    <option value="Setoran & Tugas">Pengingat Setoran Hafalan</option>
+                </select>
+                <input type="text" id="bc-title" required placeholder="Judul Pengumuman" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <textarea id="bc-body" rows="3" required placeholder="Isi pesan pengumuman..." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"></textarea>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('broadcast-modal')" class="px-4 py-2 text-xs font-semibold text-slate-600">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl">Publikasikan Notifikasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Pengaturan SPP -->
+    <div id="payment-settings-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base">Pengaturan Tagihan Madrasah</h3>
+                <button onclick="closeModal('payment-settings-modal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="savePaymentSettings(event)" class="space-y-3 mt-4">
+                <input type="text" id="set-pay-period" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <input type="number" id="set-pay-amount" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <input type="text" id="set-pay-due" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <input type="text" id="set-pay-bank" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <input type="text" id="set-pay-holder" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm">
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('payment-settings-modal')" class="px-4 py-2 text-xs font-semibold text-slate-600">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- FIREBASE MODULAR SDK & CLOUD SYNC ENGINE                                  -->
+    <!-- ========================================================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const CUSTOM_CFG_KEY = 'al_burhan_custom_firebase_cfg';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'madrasah-al-burhan-prod';
+
+        let firebaseConfig = null;
+        try {
+            const savedCustom = localStorage.getItem(CUSTOM_CFG_KEY);
+            if (savedCustom) {
+                firebaseConfig = JSON.parse(savedCustom);
+            } else if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                firebaseConfig = JSON.parse(__firebase_config);
+            }
+        } catch (e) {
+            console.warn('Konfigurasi Firebase belum disetel, beralih ke mode fallback lokal.');
+        }
+
+        window.cloudSync = {
+            enabled: false,
+            db: null,
+            auth: null,
+            user: null,
+            docRef: null,
+            pushState: async function(stateObj) {
+                if (!this.enabled || !this.docRef || !this.user) return;
+                try {
+                    const cleanPayload = JSON.parse(JSON.stringify({
+                        paymentConfig: stateObj.paymentConfig,
+                        students: stateObj.students,
+                        schedules: stateObj.schedules,
+                        attendance: stateObj.attendance,
+                        qaList: stateObj.qaList,
+                        videos: stateObj.videos,
+                        notes: stateObj.notes,
+                        exams: stateObj.exams,
+                        examResults: stateObj.examResults,
+                        library: stateObj.library,
+                        notifications: stateObj.notifications,
+                        registeredAccounts: stateObj.registeredAccounts,
+                        updatedAt: Date.now()
+                    }));
+                    await setDoc(this.docRef, cleanPayload, { merge: true });
+                } catch (err) {
+                    console.error('Gagal menyinkronkan ke Firestore:', err);
+                }
+            }
+        };
+
+        async function initFirebaseCloud() {
+            const authBadge = document.getElementById('auth-cloud-status-badge');
+            const headerIndicator = document.getElementById('header-cloud-indicator');
+
+            if (!firebaseConfig || !firebaseConfig.apiKey) {
+                if (authBadge) {
+                    authBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>Mode Hybrid Siap (Klik Setup Firebase untuk Cloud Pribadi)</span>`;
+                }
+                if (headerIndicator) {
+                    headerIndicator.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Mode Lokal / Hybrid</span>`;
+                }
+                return;
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                const db = getFirestore(app);
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                const user = auth.currentUser;
+                if (!user) return;
+
+                // RULE 1: Strict Path /artifacts/{appId}/public/data/{collectionName}
+                const sharedDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'madrasah_state', 'main_portal');
+
+                window.cloudSync.enabled = true;
+                window.cloudSync.db = db;
+                window.cloudSync.auth = auth;
+                window.cloudSync.user = user;
+                window.cloudSync.docRef = sharedDocRef;
+
+                if (authBadge) {
+                    authBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>Terhubung ke Cloud Real-Time (Firebase)</span>`;
+                }
+                if (headerIndicator) {
+                    headerIndicator.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span><span>Cloud Real-Time Tersinkron</span>`;
+                }
+
+                // Listen for real-time updates from other devices
+                onSnapshot(sharedDocRef, (snapshot) => {
+                    if (snapshot.exists()) {
+                        const cloudData = snapshot.data();
+                        if (typeof window.applyCloudSnapshot === 'function') {
+                            window.applyCloudSnapshot(cloudData);
+                        }
+                    } else {
+                        // Seed initial state to Firestore if empty
+                        if (window.appState) {
+                            window.cloudSync.pushState(window.appState);
+                        }
+                    }
+                }, (error) => {
+                    console.error('Firestore onSnapshot error:', error);
+                });
+
+            } catch (err) {
+                console.error('Inisialisasi Firebase gagal:', err);
+                if (authBadge) {
+                    authBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span><span>Offline / Fallback Mode</span>`;
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', initFirebaseCloud);
+    </script>
+
+    <!-- ========================================================================= -->
+    <!-- MAIN APPLICATION LOGIC (AUTH, STATE, 11 MODULES)                          -->
+    <!-- ========================================================================= -->
+    <script>
+        const STORAGE_KEY = 'madrasah_al_burhan_cloud_v1';
+        const SESSION_KEY = 'madrasah_al_burhan_session_v1';
+
+        const defaultState = {
+            currentRole: 'ustadz',
+            activeStudentId: 's1',
+            currentTab: 'dashboard',
+            videoFilter: 'Semua',
+
+            registeredAccounts: [
+                { email: 'ustadz@alburhan.id', password: '123', role: 'ustadz', name: 'Ustadz Abdullah, Lc.', studentId: 's1' },
+                { email: 'ahmad@alburhan.id', password: '123', role: 'thalib', name: 'Ahmad Fauzan', studentId: 's1' },
+                { email: 'wali.zaid@alburhan.id', password: '123', role: 'ortu', name: 'Bapak Dr. Rahmat Hidayat', studentId: 's2' }
+            ],
+
+            paymentConfig: {
+                period: 'November 2026',
+                amount: 350000,
+                dueDate: '25 November 2026',
+                bankName: 'Bank Syariah Indonesia (BSI)',
+                accountNumber: '7148 9920 11',
+                accountHolder: 'Yayasan Pendidikan Madrasah Al Burhan'
+            },
+
+            students: [
+                {
+                    id: 's1',
+                    name: 'Ahmad Fauzan',
+                    nim: 'MB-2026-001',
+                    waliName: 'Bapak H. Hendra Wijaya',
+                    waliPhone: '6281234567801',
+                    university: 'Universitas Al-Azhar — Syariah Islamiyah (Tingkat 2)',
+                    hafalanTotal: '18 Juz Mutqin',
+                    isPaid: true,
+                    paymentStatus: 'Lunas',
+                    paymentProofNote: 'Transfer BSI a.n. Hendra Wijaya (05 Nov 2026)',
+                    paymentHistory: [
+                        { period: 'November 2026', amount: 350000, date: '05 Nov 2026', status: 'Lunas' },
+                        { period: 'Oktober 2026', amount: 350000, date: '04 Okt 2026', status: 'Lunas' }
+                    ],
+                    mutabaah: { odoj: true, mudzakarah: true, hafalan: true, kuliah: true },
+                    certificates: [
+                        { id: 'c1', title: 'Syahadah Khatam Matan Safinatun Najah', predicate: 'Mumtaz (96)', date: '10 Okt 2026' },
+                        { id: 'c2', title: 'Peserta Terbaik Tryout Termin Awal Al-Azhar', predicate: 'Peringkat 1', date: '15 Nov 2026' }
+                    ]
+                },
+                {
+                    id: 's2',
+                    name: 'Zaid Al-Khair',
+                    nim: 'MB-2026-002',
+                    waliName: 'Bapak Dr. Rahmat Hidayat',
+                    waliPhone: '6281234567802',
+                    university: 'Universitas Al-Azhar — Ushuluddin (Tingkat 1)',
+                    hafalanTotal: '12 Juz',
+                    isPaid: false,
+                    paymentStatus: 'Belum Bayar',
+                    paymentProofNote: '',
+                    paymentHistory: [
+                        { period: 'November 2026', amount: 350000, date: '-', status: 'Belum Bayar' },
+                        { period: 'Oktober 2026', amount: 350000, date: '08 Okt 2026', status: 'Lunas' }
+                    ],
+                    mutabaah: { odoj: true, mudzakarah: false, hafalan: true, kuliah: true },
+                    certificates: [
+                        { id: 'c3', title: 'Syahadah Tahsin & Tajwid Jazariyah', predicate: 'Jayyid Jiddan (88)', date: '20 Sep 2026' }
+                    ]
+                },
+                {
+                    id: 's3',
+                    name: 'Bilal Ramadhan',
+                    nim: 'MB-2026-003',
+                    waliName: 'Ibu Hj. Siti Aminah',
+                    waliPhone: '6281234567803',
+                    university: 'Universitas Al-Azhar — Bahasa Arab (Tingkat 3)',
+                    hafalanTotal: '25 Juz',
+                    isPaid: true,
+                    paymentStatus: 'Lunas',
+                    paymentProofNote: 'Transfer Mandiri a.n. Siti Aminah (02 Nov 2026)',
+                    paymentHistory: [
+                        { period: 'November 2026', amount: 350000, date: '02 Nov 2026', status: 'Lunas' }
+                    ],
+                    mutabaah: { odoj: false, mudzakarah: true, hafalan: false, kuliah: true },
+                    certificates: [
+                        { id: 'c4', title: 'Syahadah Nadhom Al-Imrithi', predicate: 'Mumtaz (94)', date: '01 Nov 2026' }
+                    ]
+                }
+            ],
+
+            schedules: [
+                { id: 'sch1', maddah: 'Fiqh — Kitab Safinatun Najah', ustadz: 'Ustadz Abdullah, Lc.', day: 'Sabtu, 21 Nov 2026', time: '16:00 - 17:15 EET', room: 'Majelis Utama Al-Burhan', reminderSet: true },
+                { id: 'sch2', maddah: 'Aqidah — Ushul Tsalatsah', ustadz: 'Ustadz Ibrahim Al-Hafizh', day: 'Ahad, 22 Nov 2026', time: '08:00 - 09:30 EET', room: 'Aula Selatan', reminderSet: false },
+                { id: 'sch3', maddah: 'Nahwu — Matan Al-Ajurumiyah', ustadz: 'Ustadz Sulaiman', day: 'Senin, 23 Nov 2026', time: '19:30 - 20:45 EET', room: 'Majelis Utama Al-Burhan', reminderSet: false }
+            ],
+
+            attendance: {
+                'sch1': { 's1': { status: 'Hadir', note: 'Tepat waktu' }, 's2': { status: 'Hadir', note: '' }, 's3': { status: 'Izin', note: 'Ujian syafahi kampus' } },
+                'sch2': { 's1': { status: 'Hadir', note: '' }, 's2': { status: 'Sakit', note: '' }, 's3': { status: 'Hadir', note: '' } }
+            },
+
+            qaList: [
+                {
+                    id: 'qa1',
+                    maddah: 'Fiqh Ibadah',
+                    author: 'Hamba Allah (Anonim)',
+                    isAnonymous: true,
+                    date: '20 Nov 2026',
+                    question: 'Ustadz, bagaimana hukumnya jika lupa membaca doa iftitah saat shalat berjamaah di kampus?',
+                    answer: 'Membaca doa iftitah hukumnya sunnah hai\'at. Jika terlewat, shalat tetap sah dan tidak perlu sujud sahwi. Wallahu a\'lam.',
+                    answeredBy: 'Ustadz Abdullah, Lc.'
+                }
+            ],
+
+            videos: [
+                { id: 'v1', maddah: 'Fiqh', title: 'Pertemuan 12: Syarat & Rukun Thaharah', ustadz: 'Ustadz Abdullah, Lc.', date: '14 Nov 2026', duration: '52:10', desc: 'Pembahasan pembagian air dalam kitab Safinatun Najah.' },
+                { id: 'v2', maddah: 'Aqidah', title: 'Pertemuan 08: Makna Syahadat Tauhid', ustadz: 'Ustadz Ibrahim Al-Hafizh', date: '15 Nov 2026', duration: '47:35', desc: 'Penjelasan rukun dan syarat Laa Ilaaha Illallah.' },
+                { id: 'v3', maddah: 'Nahwu', title: 'Pertemuan 10: Tanda I\'rab Rafa\' & Nashab', ustadz: 'Ustadz Sulaiman', date: '16 Nov 2026', duration: '41:15', desc: 'Bedah kaidah Matan Al-Ajurumiyah.' }
+            ],
+
+            notes: [
+                { id: 'n1', maddah: 'Fiqh', title: 'Ringkasan Pembatal Wudhu', author: 'Ustadz Abdullah, Lc.', date: '19 Nov 2026', content: '1. Keluar sesuatu dari dua jalan.\n2. Hilang akal sebab tidur tidak tetap.\n3. Bersentuhan kulit lawan jenis non-mahram.\n4. Menyentuh kemaluan dengan telapak tangan.' },
+                { id: 'n2', maddah: 'Nahwu', title: 'Tanda-Tanda Kalimat Isim', author: 'Ustadz Sulaiman', date: '21 Nov 2026', content: 'Isim dikenali dengan: Khafadh (Jar), Tanwin, masuknya Alif Lam (ال), dan huruf Khafadh.' }
+            ],
+
+            exams: [
+                {
+                    id: 'ex1',
+                    title: 'Tryout Termin 1 Al-Azhar: Fiqh & Ushul',
+                    maddah: 'Fiqh',
+                    type: 'Tryout Al-Azhar',
+                    durationMinutes: 15,
+                    questions: [
+                        { q: 'Air yang suci pada dirinya namun tidak menyucikan benda lain disebut...', opts: ['Air Mutlak', 'Air Thahir Ghairu Muthahhir (Musta\'mal)', 'Air Mutanajjis', 'Air Musyammas'], ans: 1 },
+                        { q: 'Berikut ini yang termasuk rukun wudhu menurut mazhab Syafi\'i adalah...', opts: ['Membaca basmalah', 'Berkumur-kumur', 'Membasuh wajah disertai niat', 'Mengusap seluruh kepala'], ans: 2 },
+                        { q: 'Hukum membaca doa iftitah di dalam shalat fardhu adalah...', opts: ['Rukun Shalat', 'Sunnah Ab\'adh', 'Sunnah Hai\'at', 'Wajib'], ans: 2 }
+                    ]
+                },
+                {
+                    id: 'ex2',
+                    title: 'Latihan Soal Nahwu: Al-Ajurumiyah',
+                    maddah: 'Nahwu',
+                    type: 'Latihan Soal',
+                    durationMinutes: 10,
+                    questions: [
+                        { q: 'Tanda asli bagi I\'rab Rafa\' pada isim mufrad adalah...', opts: ['Fathah', 'Dhammah', 'Kasrah', 'Sukun'], ans: 1 },
+                        { q: 'Manakah di bawah ini yang termasuk tanda kalimat Isim?', opts: ['Didahului huruf Qad (قد)', 'Menerima Tanwin', 'Berakhir Ta Ta\'nits Sakinah', 'Didahului Saufa'], ans: 1 }
+                    ]
+                }
+            ],
+
+            examResults: [
+                { id: 'res1', studentId: 's1', studentName: 'Ahmad Fauzan', examTitle: 'Tryout Termin 1 Al-Azhar: Fiqh & Ushul', score: 100, date: '18 Nov 2026' },
+                { id: 'res2', studentId: 's2', studentName: 'Zaid Al-Khair', examTitle: 'Latihan Soal Nahwu: Al-Ajurumiyah', score: 85, date: '19 Nov 2026' }
+            ],
+
+            library: [
+                { id: 'lib1', category: 'Kitab Turats PDF', title: 'Matan Safinatun Najah (Berharakat)', author: 'Syaikh Salim bin Sumair Al-Hadhrami', desc: 'Teks lengkap kitab dasar fiqh ibadah mazhab Syafi\'i lengkap dengan syarah ringkas.' },
+                { id: 'lib2', category: 'Muqarrar Al-Azhar', title: 'Diktat Ushul Fiqh Tingkat 1 Al-Azhar', author: 'Tim Kurikulum Al-Azhar Asy-Syarif', desc: 'Referensi wajib persiapan imtihan termin awal mahasiswa Syariah Islamiyah.' },
+                { id: 'lib3', category: 'Rangkuman & Syarah', title: 'Bagan Kaidah Nahwu Al-Ajurumiyah', author: 'Ustadz Sulaiman', desc: 'Peta konsep pembagian kalam, i\'rab, dan marfu\'atul asma dalam format ringkas.' }
+            ],
+
+            notifications: [
+                { id: 'nt1', type: 'Ujian & Tryout', title: 'Tryout Termin 1 Al-Azhar Dibuka', body: 'Seluruh thalib tingkat 1 & 2 diharap mengerjakan Tryout Fiqh & Ushul sebelum pekan depan.', time: '2 jam lalu', read: false },
+                { id: 'nt2', type: 'Jadwal Dars', title: 'Pengingat Dars Safinatun Najah', body: 'Kajian bersama Ustadz Abdullah, Lc. pukul 16:00 EET di Majelis Utama.', time: 'Hari ini', read: false }
+            ]
+        };
+
+        window.appState = loadLocalState();
+        let currentSession = loadSession();
+        let selectedScheduleForAttendance = appState.schedules[0]?.id || 'sch1';
+        let activeExamObj = null;
+        let examTimerInterval = null;
+        let examSecondsLeft = 0;
+
+        function loadLocalState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) return JSON.parse(raw);
+            } catch (e) {}
+            return JSON.parse(JSON.stringify(defaultState));
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {}
+            if (window.cloudSync && window.cloudSync.enabled) {
+                window.cloudSync.pushState(appState);
+            }
+        }
+
+        window.applyCloudSnapshot = function(cloudData) {
+            if (!cloudData) return;
+            const keys = ['paymentConfig', 'students', 'schedules', 'attendance', 'qaList', 'videos', 'notes', 'exams', 'examResults', 'library', 'notifications', 'registeredAccounts'];
+            keys.forEach(k => {
+                if (cloudData[k] !== undefined) {
+                    appState[k] = cloudData[k];
+                }
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            if (currentSession) {
+                renderAll();
+            } else {
+                populateRegisterStudentDropdown();
+            }
+        };
+
+        function loadSession() {
+            try {
+                const raw = sessionStorage.getItem(SESSION_KEY);
+                if (raw) return JSON.parse(raw);
+            } catch (e) {}
+            return null;
+        }
+
+        function saveSession(sessionObj) {
+            currentSession = sessionObj;
+            if (sessionObj) {
+                sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionObj));
+            } else {
+                sessionStorage.removeItem(SESSION_KEY);
+            }
+        }
+
+        // =========================================================================
+        // AUTHENTICATION HANDLERS (LOGIN, REGISTER, QUICK DEMO, LOGOUT)
+        // =========================================================================
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const regForm = document.getElementById('register-form');
+            const tabLogin = document.getElementById('auth-tab-login');
+            const tabReg = document.getElementById('auth-tab-register');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                tabLogin.className = 'py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-emerald-900 shadow-sm';
+                tabReg.className = 'py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-500 hover:text-slate-800';
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                tabReg.className = 'py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-emerald-900 shadow-sm';
+                tabLogin.className = 'py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-500 hover:text-slate-800';
+                populateRegisterStudentDropdown();
+            }
+        }
+
+        function toggleRegisterRoleFields() {
+            const role = document.getElementById('reg-role').value;
+            document.getElementById('reg-thalib-fields').classList.toggle('hidden', role !== 'thalib');
+            document.getElementById('reg-ortu-fields').classList.toggle('hidden', role !== 'ortu');
+            document.getElementById('reg-ustadz-fields').classList.toggle('hidden', role !== 'ustadz');
+        }
+
+        function populateRegisterStudentDropdown() {
+            const sel = document.getElementById('reg-linked-student');
+            if (!sel) return;
+            sel.innerHTML = appState.students.map(s => `<option value="${s.id}">${s.name} (${s.nim})</option>`).join('');
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const selectedRole = document.querySelector('input[name="loginRole"]:checked').value;
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value;
+
+            const found = appState.registeredAccounts.find(acc => acc.email.toLowerCase() === email && acc.password === password);
+            if (!found) {
+                showToast('Email atau kata sandi tidak cocok. Gunakan akun terdaftar atau tombol Demo Cloud di bawah.', 'warning');
+                return;
+            }
+            if (found.role !== selectedRole) {
+                showToast(`Akun ini terdaftar sebagai ${found.role.toUpperCase()}. Silakan pilih peran yang sesuai.`, 'warning');
+                return;
+            }
+
+            enterPortal({
+                name: found.name,
+                email: found.email,
+                role: found.role,
+                studentId: found.studentId || 's1'
+            });
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const role = document.getElementById('reg-role').value;
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const password = document.getElementById('reg-password').value;
+
+            if (appState.registeredAccounts.some(a => a.email.toLowerCase() === email)) {
+                showToast('Email sudah terdaftar. Silakan masuk melalui tab Masuk.', 'warning');
+                return;
+            }
+
+            if (role === 'ustadz') {
+                const code = document.getElementById('reg-ustadz-code').value.trim();
+                if (code !== 'ALBURHAN2026') {
+                    showToast('Kode akses pengajar salah! Gunakan kode: ALBURHAN2026', 'warning');
+                    return;
+                }
+            }
+
+            let linkedStudentId = 's1';
+            if (role === 'thalib') {
+                const newId = 's_' + Date.now();
+                const uni = document.getElementById('reg-university').value.trim() || 'Universitas Al-Azhar';
+                const wali = document.getElementById('reg-wali-name').value.trim() || 'Wali Santri';
+                const newStudent = {
+                    id: newId,
+                    name: name,
+                    nim: 'MB-2026-0' + (appState.students.length + 1),
+                    waliName: wali,
+                    waliPhone: '6281234567890',
+                    university: uni,
+                    hafalanTotal: '1 Juz',
+                    isPaid: false,
+                    paymentStatus: 'Belum Bayar',
+                    paymentProofNote: '',
+                    paymentHistory: [
+                        { period: appState.paymentConfig.period, amount: appState.paymentConfig.amount, date: '-', status: 'Belum Bayar' }
+                    ],
+                    mutabaah: { odoj: false, mudzakarah: false, hafalan: false, kuliah: false },
+                    certificates: []
+                };
+                appState.students.push(newStudent);
+                linkedStudentId = newId;
+            } else if (role === 'ortu') {
+                linkedStudentId = document.getElementById('reg-linked-student').value || 's1';
+            }
+
+            appState.registeredAccounts.push({ email, password, role, name, studentId: linkedStudentId });
+            saveState();
+
+            enterPortal({ name, email, role, studentId: linkedStudentId });
+            showToast(`Alhamdulillah, akun ${name} berhasil didaftarkan & tersinkron ke Cloud!`, 'success');
+        }
+
+        function quickDemoLogin(role, studentId = 's1') {
+            const st = appState.students.find(s => s.id === studentId) || appState.students[0];
+            let displayName = 'Ustadz Abdullah, Lc.';
+            if (role === 'thalib') displayName = st.name;
+            if (role === 'ortu') displayName = st.waliName;
+
+            enterPortal({
+                name: displayName,
+                email: `${role}@alburhan.id`,
+                role: role,
+                studentId: st.id
+            });
+            showToast(`Masuk sebagai ${displayName} (${role.toUpperCase()})`, 'success');
+        }
+
+        function enterPortal(sessionData) {
+            saveSession(sessionData);
+            appState.currentRole = sessionData.role;
+            appState.activeStudentId = sessionData.studentId || 's1';
+            document.getElementById('auth-gateway').classList.add('hidden');
+            document.getElementById('portal-app').classList.remove('hidden');
+            renderAll();
+        }
+
+        function handleLogout() {
+            saveSession(null);
+            document.getElementById('portal-app').classList.add('hidden');
+            document.getElementById('auth-gateway').classList.remove('hidden');
+            showToast('Anda telah keluar dari portal.', 'info');
+        }
+
+        // =========================================================================
+        // HELPER FUNCTIONS
+        // =========================================================================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const styles = {
+                success: 'bg-emerald-800 text-white border-emerald-600',
+                warning: 'bg-amber-600 text-white border-amber-400',
+                info: 'bg-slate-800 text-white border-slate-600'
+            };
+            toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl border shadow-lg text-xs font-medium transition-all duration-300 ${styles[type] || styles.info}`;
+            toast.innerHTML = `<i data-lucide="info" class="w-4 h-4 shrink-0 text-amber-300"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => toast.remove(), 3200);
+        }
+
+        function openModal(id) {
+            if (id === 'question-bank-modal') {
+                document.getElementById('qb-exam-id').innerHTML = appState.exams.map(ex => `<option value="${ex.id}">${ex.title}</option>`).join('');
+            }
+            if (id === 'certificate-modal') {
+                document.getElementById('cert-student-id').innerHTML = appState.students.map(s => `<option value="${s.id}">${s.name} (${s.nim})</option>`).join('');
+            }
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function copyTextToClipboard(text, msg = 'Teks berhasil disalin!') {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast(msg, 'success');
+            } catch (e) {}
+            document.body.removeChild(ta);
+        }
+
+        function formatRupiah(n) {
+            return 'Rp ' + Number(n || 0).toLocaleString('id-ID');
+        }
+
+        function toggleMobileNav() {
+            document.getElementById('main-nav').classList.toggle('hidden');
+        }
+
+        function switchTab(tabName) {
+            appState.currentTab = tabName;
+            document.querySelectorAll('.tab-section').forEach(s => s.classList.add('hidden'));
+            const target = document.getElementById(`tab-${tabName}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('bg-emerald-50', 'text-emerald-800', 'font-bold', 'ring-1', 'ring-emerald-200');
+                    btn.classList.remove('text-slate-600');
+                } else {
+                    btn.classList.remove('bg-emerald-50', 'text-emerald-800', 'font-bold', 'ring-1', 'ring-emerald-200');
+                    btn.classList.add('text-slate-600');
+                }
+            });
+
+            if (window.innerWidth < 768) {
+                document.getElementById('main-nav').classList.add('hidden');
+            }
+        }
+
+        function changeActiveStudent(studentId) {
+            appState.activeStudentId = studentId;
+            if (currentSession) {
+                currentSession.studentId = studentId;
+                saveSession(currentSession);
+            }
+            renderAll();
+        }
+
+        // =========================================================================
+        // RENDER HEADER & BANNER
+        // =========================================================================
+        function renderHeaderAndBanner() {
+            const role = appState.currentRole;
+            const student = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+
+            ['ustadz', 'thalib', 'ortu'].forEach(r => {
+                const b = document.getElementById(`hdr-role-${r}`);
+                if (!b) return;
+                b.className = r === role
+                    ? 'px-2 py-1 rounded-lg text-[11px] font-bold bg-amber-400 text-emerald-950'
+                    : 'px-2 py-1 rounded-lg text-[11px] font-semibold text-emerald-200 hover:text-white';
+            });
+
+            const selWrap = document.getElementById('student-selector-wrapper');
+            const selEl = document.getElementById('active-student-select');
+            if (role === 'ustadz') {
+                selWrap.classList.add('hidden');
+            } else {
+                selWrap.classList.remove('hidden');
+                selWrap.classList.add('flex');
+                selEl.innerHTML = appState.students.map(s => `<option value="${s.id}" ${s.id === student.id ? 'selected' : ''}>${s.name}</option>`).join('');
+            }
+
+            // Notification Bell Badge
+            const unreadCount = appState.notifications.filter(n => !n.read).length;
+            const bellBadge = document.getElementById('header-notif-badge');
+            if (unreadCount > 0) {
+                bellBadge.textContent = unreadCount;
+                bellBadge.classList.remove('hidden');
+            } else {
+                bellBadge.classList.add('hidden');
+            }
+
+            // QA Badge
+            const unansweredCount = appState.qaList.filter(q => !q.answer).length;
+            const qaBadge = document.getElementById('unanswered-badge');
+            qaBadge.textContent = unansweredCount;
+            qaBadge.classList.toggle('hidden', unansweredCount === 0);
+
+            // Payment Badge
+            const payBadge = document.getElementById('payment-nav-badge');
+            if (role === 'ustadz') {
+                const unpaid = appState.students.filter(s => s.paymentStatus !== 'Lunas').length;
+                payBadge.textContent = unpaid;
+                payBadge.classList.toggle('hidden', unpaid === 0);
+            } else {
+                payBadge.textContent = '!';
+                payBadge.classList.toggle('hidden', student.isPaid);
+            }
+
+            // Banner Text
+            const roleBadge = document.getElementById('banner-role-badge');
+            const greeting = document.getElementById('banner-greeting');
+            const subtitle = document.getElementById('banner-subtitle');
+            const actionArea = document.getElementById('banner-action-area');
+
+            if (role === 'ustadz') {
+                roleBadge.textContent = 'Panel Pengajar / Asatidzah';
+                greeting.textContent = `Ahlan wa Sahlan, ${currentSession?.name || 'Ustadz Abdullah, Lc.'}`;
+                subtitle.textContent = 'Kelola absensi, bank soal tryout Al-Azhar, verifikasi syahriyah, dan terbitkan syahadah santri.';
+                actionArea.innerHTML = `
+                    <button onclick="switchTab('absensi')" class="px-3.5 py-2 rounded-xl bg-amber-400 text-emerald-950 text-xs font-bold shadow-sm">Input Absensi</button>
+                    <button onclick="switchTab('ujian')" class="px-3.5 py-2 rounded-xl bg-white/15 border border-white/20 text-white text-xs font-semibold">Bank Soal Azhar</button>
+                `;
+            } else if (role === 'thalib') {
+                roleBadge.textContent = `Portal Thalib • ${student.nim}`;
+                greeting.textContent = `Ahlan wa Sahlan, ${student.name}`;
+                subtitle.textContent = `${student.university} • Hafalan: ${student.hafalanTotal}`;
+                actionArea.innerHTML = `
+                    <button onclick="switchTab('ujian')" class="px-3.5 py-2 rounded-xl bg-amber-400 text-emerald-950 text-xs font-bold shadow-sm">Mulai Tryout Al-Azhar</button>
+                    <button onclick="switchTab('portfolio')" class="px-3.5 py-2 rounded-xl bg-white/15 border border-white/20 text-white text-xs font-semibold">Lihat Portfolio</button>
+                `;
+            } else {
+                roleBadge.textContent = 'Portal Pemantauan Orang Tua / Wali';
+                greeting.textContent = `Assalamu'alaikum, ${student.waliName}`;
+                subtitle.textContent = `Memantau perkembangan akademik & mutaba'ah ananda: ${student.name} (${student.nim})`;
+                actionArea.innerHTML = `
+                    <button onclick="switchTab('portfolio')" class="px-3.5 py-2 rounded-xl bg-amber-400 text-emerald-950 text-xs font-bold shadow-sm">Portfolio & Nilai Ananda</button>
+                `;
+            }
+        }
+
+        // =========================================================================
+        // RENDER DASHBOARD
+        // =========================================================================
+        function renderDashboard() {
+            const role = appState.currentRole;
+            const student = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+            const cfg = appState.paymentConfig;
+
+            // Payment Reminder Banner
+            const payAlertEl = document.getElementById('dashboard-payment-alert');
+            if (role !== 'ustadz' && !student.isPaid) {
+                payAlertEl.className = 'rounded-2xl bg-amber-50 border border-amber-300 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3';
+                payAlertEl.innerHTML = `
+                    <div>
+                        <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 text-[10px] font-bold uppercase">Pengingat Syahriyah</span>
+                        <h3 class="text-sm font-bold text-slate-800 mt-1">Tagihan ${cfg.period} (${formatRupiah(cfg.amount)}) — Jatuh Tempo ${cfg.dueDate}</h3>
+                        <p class="text-xs text-slate-600">Lunasi iuran untuk membuka seluruh rekaman video dars per maddah.</p>
+                    </div>
+                    <button onclick="switchTab('pembayaran')" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shrink-0">Bayar / Konfirmasi →</button>
+                `;
+            } else {
+                payAlertEl.className = 'hidden';
+            }
+
+            const attStats = getStudentAttendanceStats(student.id);
+            const mutabaahDone = Object.values(student.mutabaah).filter(Boolean).length;
+
+            document.getElementById('dashboard-stats-grid').innerHTML = `
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i data-lucide="user-check" class="w-5 h-5"></i></div>
+                    <div><p class="text-xs text-slate-500">Kehadiran Dars</p><p class="text-xl font-bold text-slate-800">${attStats.percentage}%</p></div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"><i data-lucide="check-circle-2" class="w-5 h-5"></i></div>
+                    <div><p class="text-xs text-slate-500">Mutaba'ah Hari Ini</p><p class="text-xl font-bold text-slate-800">${mutabaahDone} / 4 Wajib</p></div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center"><i data-lucide="file-check-2" class="w-5 h-5"></i></div>
+                    <div><p class="text-xs text-slate-500">Paket Tryout Azhar</p><p class="text-xl font-bold text-slate-800">${appState.exams.length} Paket</p></div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center"><i data-lucide="library" class="w-5 h-5"></i></div>
+                    <div><p class="text-xs text-slate-500">Digital Library</p><p class="text-xl font-bold text-slate-800">${appState.library.length} Kitab PDF</p></div>
+                </div>
+            `;
+
+            document.getElementById('btn-open-schedule-modal').classList.toggle('hidden', role !== 'ustadz');
+
+            const nextDars = appState.schedules[0];
+            if (nextDars) {
+                document.getElementById('next-dars-reminder').innerHTML = `
+                    <div>
+                        <span class="text-[11px] font-bold uppercase text-amber-800 bg-amber-200 px-2 py-0.5 rounded">Dars Berikutnya • ${nextDars.day} (${nextDars.time})</span>
+                        <h4 class="font-bold text-slate-800 text-sm mt-1">${nextDars.maddah}</h4>
+                        <p class="text-xs text-slate-600">${nextDars.ustadz} — ${nextDars.room}</p>
+                    </div>
+                    <button onclick="toggleScheduleReminder('${nextDars.id}')" class="px-3.5 py-2 rounded-xl text-xs font-bold ${nextDars.reminderSet ? 'bg-emerald-600 text-white' : 'bg-white border border-amber-300 text-amber-900'}">
+                        ${nextDars.reminderSet ? 'Pengingat Aktif' : 'Ingatkan Saya'}
+                    </button>
+                `;
+            }
+
+            document.getElementById('schedule-list').innerHTML = appState.schedules.map(sch => `
+                <div class="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="font-bold text-sm text-slate-800">${sch.maddah}</span>
+                        <p class="text-xs text-slate-500">${sch.day} • ${sch.time} • ${sch.ustadz}</p>
+                    </div>
+                    ${role === 'ustadz' ? `<button onclick="goToSessionAttendance('${sch.id}')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold self-start">Absen Sesi</button>` : ''}
+                </div>
+            `).join('');
+
+            // Quick Mutabaah
+            const items = [
+                { key: 'odoj', label: '1. One Day One Juz' },
+                { key: 'mudzakarah', label: '2. Mudzakarah Dars' },
+                { key: 'hafalan', label: '3. Setoran Hafalan (Min 1 Hal)' },
+                { key: 'kuliah', label: '4. Pergi Kuliah' }
+            ];
+            document.getElementById('dash-mutabaah-title').textContent = `Mutaba'ah: ${student.name}`;
+            document.getElementById('dash-mutabaah-content').innerHTML = items.map(it => {
+                const checked = student.mutabaah[it.key];
+                return `
+                    <div onclick="toggleMutabaahItem('${student.id}', '${it.key}')" class="cursor-pointer flex items-center justify-between p-2.5 rounded-xl border ${checked ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-slate-50 border-slate-200 text-slate-600'}">
+                        <span class="text-xs font-medium">${it.label}</span>
+                        <span class="w-5 h-5 rounded flex items-center justify-center ${checked ? 'bg-emerald-600 text-white' : 'bg-white border border-slate-300'}">${checked ? '✓' : ''}</span>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('dash-notes-content').innerHTML = appState.notes.slice(0, 3).map(n => `
+                <div onclick="switchTab('catatan')" class="cursor-pointer p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-100">
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">${n.maddah}</span>
+                    <p class="text-xs font-semibold text-slate-800 mt-1">${n.title}</p>
+                </div>
+            `).join('');
+        }
+
+        function toggleScheduleReminder(id) {
+            const sch = appState.schedules.find(s => s.id === id);
+            if (sch) {
+                sch.reminderSet = !sch.reminderSet;
+                saveState();
+                renderDashboard();
+                showToast(sch.reminderSet ? 'Pengingat dars diaktifkan!' : 'Pengingat dinonaktifkan', 'success');
+            }
+        }
+
+        function addNewSchedule(e) {
+            e.preventDefault();
+            const newSched = {
+                id: 'sch_' + Date.now(),
+                maddah: document.getElementById('sched-maddah').value,
+                day: document.getElementById('sched-day').value,
+                time: document.getElementById('sched-time').value,
+                ustadz: document.getElementById('sched-ustadz').value,
+                room: document.getElementById('sched-room').value,
+                reminderSet: true
+            };
+            appState.schedules.unshift(newSched);
+            selectedScheduleForAttendance = newSched.id;
+            saveState();
+            closeModal('schedule-modal');
+            e.target.reset();
+            renderAll();
+            showToast('Jadwal dars baru berhasil disimpan ke Cloud!', 'success');
+        }
+
+        // =========================================================================
+        // ABSENSI FLEKSIBEL
+        // =========================================================================
+        function goToSessionAttendance(id) {
+            selectedScheduleForAttendance = id;
+            switchTab('absensi');
+            renderAbsensi();
+        }
+
+        function getStudentAttendanceStats(studentId) {
+            let hadir = 0, izin = 0, sakit = 0, alpha = 0, total = 0;
+            appState.schedules.forEach(sch => {
+                const rec = appState.attendance[sch.id]?.[studentId];
+                if (rec && rec.status) {
+                    total++;
+                    if (rec.status === 'Hadir') hadir++;
+                    else if (rec.status === 'Izin') izin++;
+                    else if (rec.status === 'Sakit') sakit++;
+                    else if (rec.status === 'Alpha') alpha++;
+                }
+            });
+            const percentage = total > 0 ? Math.round((hadir / total) * 100) : 100;
+            return { hadir, izin, sakit, alpha, total, percentage };
+        }
+
+        function renderAbsensi() {
+            const role = appState.currentRole;
+            document.getElementById('absensi-ustadz-view').classList.toggle('hidden', role !== 'ustadz');
+            document.getElementById('absensi-monitoring-view').classList.toggle('hidden', role === 'ustadz');
+
+            if (role === 'ustadz') {
+                const sel = document.getElementById('attendance-session-select');
+                sel.innerHTML = appState.schedules.map(s => `<option value="${s.id}" ${s.id === selectedScheduleForAttendance ? 'selected' : ''}>${s.maddah} (${s.day})</option>`).join('');
+                renderAttendanceForm();
+            } else {
+                const student = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+                const stats = getStudentAttendanceStats(student.id);
+                document.getElementById('monitoring-absensi-title').textContent = `Laporan Kehadiran: ${student.name}`;
+                document.getElementById('attendance-percentage-badge').textContent = `Kehadiran: ${stats.percentage}%`;
+                document.getElementById('attendance-summary-pills').innerHTML = `
+                    <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-center"><p class="text-xs text-emerald-700">Hadir</p><p class="text-xl font-bold text-emerald-900">${stats.hadir}</p></div>
+                    <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-center"><p class="text-xs text-blue-700">Izin</p><p class="text-xl font-bold text-blue-900">${stats.izin}</p></div>
+                    <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-center"><p class="text-xs text-amber-700">Sakit</p><p class="text-xl font-bold text-amber-900">${stats.sakit}</p></div>
+                    <div class="p-3 rounded-xl bg-rose-50 border border-rose-200 text-center"><p class="text-xs text-rose-700">Alpha</p><p class="text-xl font-bold text-rose-900">${stats.alpha}</p></div>
+                `;
+                document.getElementById('student-attendance-history').innerHTML = appState.schedules.map(sch => {
+                    const rec = appState.attendance[sch.id]?.[student.id] || { status: 'Belum Dicatat', note: '' };
+                    return `
+                        <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/40 flex items-center justify-between">
+                            <div><p class="font-bold text-sm text-slate-800">${sch.maddah}</p><p class="text-xs text-slate-500">${sch.day} • ${sch.time}</p></div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">${rec.status}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function renderAttendanceForm() {
+            selectedScheduleForAttendance = document.getElementById('attendance-session-select').value;
+            const recs = appState.attendance[selectedScheduleForAttendance] || {};
+            document.getElementById('attendance-recording-list').innerHTML = appState.students.map(st => {
+                const cur = recs[st.id] || { status: 'Hadir', note: '' };
+                return `
+                    <div class="p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div><h4 class="font-bold text-sm text-slate-800">${st.name}</h4><p class="text-xs text-slate-500">${st.nim}</p></div>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${['Hadir', 'Izin', 'Sakit', 'Alpha'].map(s => `
+                                <button type="button" onclick="updateStudentAttendance('${st.id}', '${s}')" class="px-3 py-1.5 rounded-lg text-xs font-bold ${cur.status === s ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'}">${s}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateStudentAttendance(studentId, status) {
+            if (!appState.attendance[selectedScheduleForAttendance]) appState.attendance[selectedScheduleForAttendance] = {};
+            appState.attendance[selectedScheduleForAttendance][studentId] = { status, note: '' };
+            saveState();
+            renderAttendanceForm();
+        }
+
+        function markAllPresent() {
+            if (!appState.attendance[selectedScheduleForAttendance]) appState.attendance[selectedScheduleForAttendance] = {};
+            appState.students.forEach(s => appState.attendance[selectedScheduleForAttendance][s.id] = { status: 'Hadir', note: '' });
+            saveState();
+            renderAttendanceForm();
+            showToast('Seluruh thalib ditandai Hadir.', 'success');
+        }
+
+        function saveAttendanceNotify() {
+            saveState();
+            renderDashboard();
+            showToast('Absensi tersimpan & tersinkronisasi ke Cloud!', 'success');
+        }
+
+        // =========================================================================
+        // MUTABA'AH YAUMIYAH
+        // =========================================================================
+        function renderMutabaah() {
+            const role = appState.currentRole;
+            const student = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+            const defs = [
+                { key: 'odoj', title: '1. One Day One Juz', desc: 'Membaca Al-Qur\'an minimal 1 juz penuh setiap hari.' },
+                { key: 'mudzakarah', title: '2. Mudzakarah Dars', desc: 'Mengulang materi dars bersama rekan atau mandiri.' },
+                { key: 'hafalan', title: '3. Setoran Wajib Hafalan', desc: 'Setoran hafalan minimal 1 halaman kepada musyrif.' },
+                { key: 'kuliah', title: '4. Pergi Kuliah', desc: 'Menghadiri perkuliahan di Universitas Al-Azhar / kampus.' }
+            ];
+
+            document.getElementById('mutabaah-single-view').classList.toggle('hidden', role === 'ustadz');
+            document.getElementById('mutabaah-ustadz-overview').classList.toggle('hidden', role !== 'ustadz');
+
+            if (role === 'ustadz') {
+                document.getElementById('mutabaah-all-students-grid').innerHTML = appState.students.map(s => {
+                    const done = Object.values(s.mutabaah).filter(Boolean).length;
+                    return `
+                        <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-2">
+                            <div class="flex justify-between font-bold text-sm"><span>${s.name}</span><span class="text-emerald-700">${done}/4</span></div>
+                            ${defs.map(d => `
+                                <div onclick="toggleMutabaahItem('${s.id}', '${d.key}')" class="cursor-pointer flex justify-between p-2 rounded-xl bg-white border text-xs">
+                                    <span>${d.title}</span><span class="font-bold text-emerald-600">${s.mutabaah[d.key] ? '✓ Selesai' : 'Belum'}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                const done = Object.values(student.mutabaah).filter(Boolean).length;
+                const pct = Math.round((done / 4) * 100);
+                document.getElementById('mutabaah-student-label').textContent = `Progres Harian: ${student.name}`;
+                document.getElementById('mutabaah-progress-text').textContent = `${done} / 4 Selesai (${pct}%)`;
+                document.getElementById('mutabaah-progress-bar').style.width = `${pct}%`;
+
+                document.getElementById('mutabaah-checklist-cards').innerHTML = defs.map(d => {
+                    const checked = student.mutabaah[d.key];
+                    return `
+                        <div onclick="toggleMutabaahItem('${student.id}', '${d.key}')" class="cursor-pointer p-4 rounded-2xl border-2 transition-all ${checked ? 'bg-emerald-50 border-emerald-500' : 'bg-white border-slate-200'}">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-sm text-slate-800">${d.title}</h3>
+                                <span class="w-6 h-6 rounded-lg flex items-center justify-center ${checked ? 'bg-emerald-600 text-white' : 'border border-slate-300'}">${checked ? '✓' : ''}</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">${d.desc}</p>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function toggleMutabaahItem(studentId, key) {
+            const st = appState.students.find(s => s.id === studentId);
+            if (!st) return;
+            st.mutabaah[key] = !st.mutabaah[key];
+            saveState();
+            renderAll();
+            showToast('Status Mutaba\'ah diperbarui & tersinkronisasi!', 'success');
+        }
+
+        // =========================================================================
+        // UJIAN ONLINE & TRYOUT TERMIN AL-AZHAR
+        // =========================================================================
+        function renderUjian() {
+            const role = appState.currentRole;
+            document.getElementById('btn-add-question-bank').classList.toggle('hidden', role !== 'ustadz');
+
+            document.getElementById('exam-packages-grid').innerHTML = appState.exams.map(ex => `
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/40 flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-1.5">
+                            <span class="px-2.5 py-0.5 rounded-md bg-amber-100 text-amber-900 text-[10px] font-bold uppercase">${ex.type}</span>
+                            <span class="text-xs font-semibold text-slate-500">${ex.durationMinutes} Menit</span>
+                        </div>
+                        <h4 class="font-bold text-sm text-slate-800">${ex.title}</h4>
+                        <p class="text-xs text-slate-500 mt-1">Maddah: ${ex.maddah} • ${ex.questions.length} Butir Soal</p>
+                    </div>
+                    <button onclick="startExam('${ex.id}')" class="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm">
+                        ${role === 'ustadz' ? 'Pratinjau Soal Ujian' : 'Mulai Kerjakan Ujian'}
+                    </button>
+                </div>
+            `).join('');
+
+            document.getElementById('exam-results-list').innerHTML = appState.examResults.map(res => `
+                <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 flex items-center justify-between gap-3">
+                    <div>
+                        <p class="font-bold text-sm text-slate-800">${res.examTitle}</p>
+                        <p class="text-xs text-slate-500">Thalib: <strong>${res.studentName}</strong> • Tanggal: ${res.date}</p>
+                    </div>
+                    <span class="px-3.5 py-1.5 rounded-xl text-sm font-extrabold ${res.score >= 80 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                        Nilai: ${res.score}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function startExam(examId) {
+            const ex = appState.exams.find(e => e.id === examId);
+            if (!ex) return;
+            activeExamObj = ex;
+            examSecondsLeft = ex.durationMinutes * 60;
+
+            document.getElementById('exam-hub-container').classList.add('hidden');
+            document.getElementById('exam-runner-container').classList.remove('hidden');
+            document.getElementById('runner-exam-badge').textContent = ex.type;
+            document.getElementById('runner-exam-title').textContent = ex.title;
+
+            document.getElementById('exam-questions-render').innerHTML = ex.questions.map((item, idx) => `
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+                    <p class="text-sm font-bold text-slate-800">${idx + 1}. ${item.q}</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        ${item.opts.map((opt, oIdx) => `
+                            <label class="cursor-pointer flex items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-200 hover:border-emerald-400 text-xs">
+                                <input type="radio" name="exam_q_${idx}" value="${oIdx}" class="accent-emerald-600">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            clearInterval(examTimerInterval);
+            updateExamTimerDisplay();
+            examTimerInterval = setInterval(() => {
+                examSecondsLeft--;
+                updateExamTimerDisplay();
+                if (examSecondsLeft <= 0) {
+                    clearInterval(examTimerInterval);
+                    submitActiveExam();
+                }
+            }, 1000);
+        }
+
+        function updateExamTimerDisplay() {
+            const m = String(Math.floor(examSecondsLeft / 60)).padStart(2, '0');
+            const s = String(examSecondsLeft % 60).padStart(2, '0');
+            document.getElementById('exam-timer-display').textContent = `${m}:${s}`;
+        }
+
+        function cancelActiveExam() {
+            clearInterval(examTimerInterval);
+            activeExamObj = null;
+            document.getElementById('exam-runner-container').classList.add('hidden');
+            document.getElementById('exam-hub-container').classList.remove('hidden');
+        }
+
+        function submitActiveExam() {
+            if (!activeExamObj) return;
+            clearInterval(examTimerInterval);
+
+            let correct = 0;
+            activeExamObj.questions.forEach((q, idx) => {
+                const chosen = document.querySelector(`input[name="exam_q_${idx}"]:checked`);
+                if (chosen && Number(chosen.value) === q.ans) correct++;
+            });
+
+            const score = Math.round((correct / activeExamObj.questions.length) * 100);
+            const student = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+
+            appState.examResults.unshift({
+                id: 'res_' + Date.now(),
+                studentId: student.id,
+                studentName: appState.currentRole === 'ustadz' ? 'Ustadz (Simulasi)' : student.name,
+                examTitle: activeExamObj.title,
+                score: score,
+                date: 'Hari Ini'
+            });
+
+            saveState();
+            cancelActiveExam();
+            renderAll();
+            showToast(`Ujian selesai! Skor Anda: ${score} (${correct}/${activeExamObj.questions.length} benar)`, 'success');
+        }
+
+        function addQuestionToBank(e) {
+            e.preventDefault();
+            const examId = document.getElementById('qb-exam-id').value;
+            const ex = appState.exams.find(x => x.id === examId);
+            if (!ex) return;
+
+            ex.questions.push({
+                q: document.getElementById('qb-question').value.trim(),
+                opts: [
+                    document.getElementById('qb-opt-0').value.trim(),
+                    document.getElementById('qb-opt-1').value.trim(),
+                    document.getElementById('qb-opt-2').value.trim(),
+                    document.getElementById('qb-opt-3').value.trim()
+                ],
+                ans: Number(document.getElementById('qb-correct').value)
+            });
+
+            saveState();
+            closeModal('question-bank-modal');
+            e.target.reset();
+            renderUjian();
+            showToast('Soal baru berhasil ditambahkan ke Bank Soal!', 'success');
+        }
+
+        // =========================================================================
+        // STUDENT PORTFOLIO & SERTIFIKAT
+        // =========================================================================
+        function renderPortfolio() {
+            const role = appState.currentRole;
+            const student = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+
+            document.getElementById('btn-grant-certificate').classList.toggle('hidden', role !== 'ustadz');
+            const uBar = document.getElementById('portfolio-ustadz-student-bar');
+            if (role === 'ustadz') {
+                uBar.classList.remove('hidden');
+                document.getElementById('portfolio-student-select').innerHTML = appState.students.map(s => `<option value="${s.id}" ${s.id === student.id ? 'selected' : ''}>${s.name} (${s.nim})</option>`).join('');
+            } else {
+                uBar.classList.add('hidden');
+            }
+
+            const studentResults = appState.examResults.filter(r => r.studentId === student.id);
+            const avgScore = studentResults.length > 0
+                ? Math.round(studentResults.reduce((acc, r) => acc + r.score, 0) / studentResults.length)
+                : 90;
+            const attStats = getStudentAttendanceStats(student.id);
+
+            document.getElementById('portfolio-content-area').innerHTML = `
+                <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-900 to-teal-950 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-amber-300">Rekam Jejak Akademik Santri</span>
+                        <h3 class="text-xl sm:text-2xl font-bold mt-0.5">${student.name}</h3>
+                        <p class="text-xs text-emerald-200 mt-1">${student.nim} • ${student.university}</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="p-2.5 rounded-xl bg-white/10"><p class="text-[10px] text-emerald-200">Hafalan</p><p class="text-sm font-bold text-amber-300">${student.hafalanTotal}</p></div>
+                        <div class="p-2.5 rounded-xl bg-white/10"><p class="text-[10px] text-emerald-200">Rata Nilai</p><p class="text-sm font-bold text-white">${avgScore}</p></div>
+                        <div class="p-2.5 rounded-xl bg-white/10"><p class="text-[10px] text-emerald-200">Kehadiran</p><p class="text-sm font-bold text-white">${attStats.percentage}%</p></div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold text-slate-800 mb-3">Sertifikat & Syahadah Kelulusan</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${(student.certificates || []).map(c => `
+                            <div class="p-4 rounded-2xl border-2 border-amber-300 bg-amber-50/50 flex flex-col justify-between space-y-3">
+                                <div>
+                                    <span class="text-[10px] font-bold uppercase text-amber-800 bg-amber-200 px-2 py-0.5 rounded">Syahadah Resmi Al-Burhan</span>
+                                    <h5 class="font-bold text-sm text-slate-900 mt-1.5">${c.title}</h5>
+                                    <p class="text-xs text-slate-600 mt-1">Predikat: <strong>${c.predicate}</strong> • Tanggal: ${c.date}</p>
+                                </div>
+                                <button onclick="window.print()" class="self-start px-3 py-1.5 rounded-xl bg-emerald-700 text-white text-xs font-semibold flex items-center gap-1.5">
+                                    <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                                    <span>Cetak Syahadah</span>
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function issueStudentCertificate(e) {
+            e.preventDefault();
+            const stId = document.getElementById('cert-student-id').value;
+            const st = appState.students.find(s => s.id === stId);
+            if (!st) return;
+
+            if (!st.certificates) st.certificates = [];
+            st.certificates.unshift({
+                id: 'cert_' + Date.now(),
+                title: document.getElementById('cert-title').value.trim(),
+                predicate: document.getElementById('cert-predicate').value.trim(),
+                date: 'Hari Ini'
+            });
+
+            saveState();
+            closeModal('certificate-modal');
+            e.target.reset();
+            renderPortfolio();
+            showToast(`Sertifikat berhasil diterbitkan untuk ${st.name}!`, 'success');
+        }
+
+        // =========================================================================
+        // AL BURHAN DIGITAL LIBRARY
+        // =========================================================================
+        function renderLibrary() {
+            const role = appState.currentRole;
+            document.getElementById('btn-add-library').classList.toggle('hidden', role !== 'ustadz');
+
+            const q = (document.getElementById('library-search-input')?.value || '').toLowerCase();
+            const filtered = appState.library.filter(item =>
+                item.title.toLowerCase().includes(q) ||
+                item.author.toLowerCase().includes(q) ||
+                item.category.toLowerCase().includes(q)
+            );
+
+            document.getElementById('library-grid').innerHTML = filtered.map(item => `
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/40 flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-bold">${item.category}</span>
+                        <h4 class="font-bold text-sm text-slate-800 mt-1.5">${item.title}</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Muallif: ${item.author}</p>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">${item.desc}</p>
+                    </div>
+                    <button onclick="showToast('Membuka pratinjau PDF: ${item.title}', 'info')" class="w-full py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-xs font-bold transition-colors">
+                        Baca / Unduh PDF
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addLibraryItem(e) {
+            e.preventDefault();
+            appState.library.unshift({
+                id: 'lib_' + Date.now(),
+                category: document.getElementById('lib-category').value,
+                title: document.getElementById('lib-title').value.trim(),
+                author: document.getElementById('lib-author').value.trim(),
+                desc: document.getElementById('lib-desc').value.trim()
+            });
+            saveState();
+            closeModal('library-modal');
+            e.target.reset();
+            renderLibrary();
+            showToast('Kitab/referensi berhasil ditambahkan ke Digital Library!', 'success');
+        }
+
+        // =========================================================================
+        // VIDEO DARS, CATATAN, KOTAK SOAL, PEMBAYARAN, NOTIFICATION CENTER
+        // =========================================================================
+        function filterVideos(m) {
+            appState.videoFilter = m;
+            renderVideos();
+        }
+
+        function toggleStudentPaymentStatus(studentId) {
+            const st = appState.students.find(s => s.id === studentId);
+            if (!st) return;
+            st.isPaid = !st.isPaid;
+            st.paymentStatus = st.isPaid ? 'Lunas' : 'Belum Bayar';
+            saveState();
+            renderAll();
+            showToast(st.isPaid ? `Pembayaran ${st.name} Lunas! Video terbuka.` : `Status ${st.name} belum lunas.`, st.isPaid ? 'success' : 'warning');
+        }
+
+        function renderVideos() {
+            const role = appState.currentRole;
+            const student = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+            const isUnlocked = role === 'ustadz' || student.isPaid;
+
+            document.getElementById('btn-add-video').classList.toggle('hidden', role !== 'ustadz');
+            const banner = document.getElementById('video-access-banner');
+            banner.className = `rounded-2xl border p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${isUnlocked ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-300'}`;
+            banner.innerHTML = role === 'ustadz'
+                ? `<p class="text-xs font-bold text-emerald-950">Kontrol Akses Video Dars (Klik tombol santri untuk ubah status lunas):</p>
+                   <div class="flex flex-wrap gap-2">${appState.students.map(s => `<button onclick="toggleStudentPaymentStatus('${s.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold ${s.isPaid ? 'bg-emerald-600 text-white' : 'bg-white border text-slate-700'}">${s.name}: ${s.isPaid ? 'Lunas' : 'Belum'}</button>`).join('')}</div>`
+                : `<div><h3 class="font-bold text-sm text-slate-800">${isUnlocked ? 'Akses Video Terbuka Penuh (Lunas)' : 'Rekaman Terkunci (Menunggu Pembayaran SPP)'}</h3></div>
+                   <button onclick="switchTab('pembayaran')" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold">${isUnlocked ? 'Lihat Riwayat SPP' : 'Konfirmasi Pembayaran'}</button>`;
+
+            const vids = appState.videoFilter === 'Semua' ? appState.videos : appState.videos.filter(v => v.maddah === appState.videoFilter);
+            document.getElementById('video-grid').innerHTML = vids.map(v => `
+                <div class="rounded-2xl border border-slate-200 overflow-hidden bg-white flex flex-col justify-between">
+                    <div onclick="${isUnlocked ? `playVideo('${v.id}')` : `showToast('Video terkunci! Lunasi syahriyah untuk membuka akses.', 'warning')`}" class="cursor-pointer aspect-video ${isUnlocked ? 'bg-emerald-900' : 'bg-slate-800'} text-white flex flex-col items-center justify-center p-4 text-center">
+                        <span class="px-2.5 py-0.5 rounded bg-amber-400 text-emerald-950 text-[10px] font-bold mb-2">${v.maddah}</span>
+                        <p class="font-bold text-sm">${isUnlocked ? '▶ Putar Rekaman' : '🔒 Terkunci'}</p>
+                        <span class="text-[11px] text-slate-300 mt-1">${v.duration}</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-sm text-slate-800">${v.title}</h4>
+                        <p class="text-xs text-slate-500 mt-1">${v.ustadz} • ${v.date}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function playVideo(id) {
+            const v = appState.videos.find(x => x.id === id);
+            if (!v) return;
+            document.getElementById('player-title').textContent = v.title;
+            document.getElementById('player-overlay-title').textContent = v.title;
+            document.getElementById('player-overlay-ustadz').textContent = `${v.ustadz} • ${v.duration}`;
+            document.getElementById('player-desc').textContent = v.desc;
+            openModal('video-player-modal');
+        }
+
+        function addNewVideo(e) {
+            e.preventDefault();
+            appState.videos.unshift({
+                id: 'v_' + Date.now(),
+                maddah: document.getElementById('vid-maddah').value,
+                title: document.getElementById('vid-title').value,
+                ustadz: document.getElementById('vid-ustadz').value,
+                duration: document.getElementById('vid-duration').value,
+                date: 'Hari Ini',
+                desc: document.getElementById('vid-desc').value
+            });
+            saveState();
+            closeModal('video-upload-modal');
+            e.target.reset();
+            renderVideos();
+            showToast('Rekaman video dars berhasil diunggah!', 'success');
+        }
+
+        function renderNotes() {
+            const q = (document.getElementById('notes-search-input')?.value || '').toLowerCase();
+            const list = appState.notes.filter(n => n.title.toLowerCase().includes(q) || n.maddah.toLowerCase().includes(q));
+            document.getElementById('notes-grid').innerHTML = list.map(n => `
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/40 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">${n.maddah}</span>
+                    <h3 class="font-bold text-sm text-slate-800">${n.title}</h3>
+                    <p class="text-xs text-slate-500">${n.author} • ${n.date}</p>
+                    <div class="p-3 rounded-xl bg-white border text-xs whitespace-pre-line text-slate-700">${n.content}</div>
+                    <button onclick="copyTextToClipboard(\`${n.title}\\n${n.content}\`, 'Catatan disalin!')" class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-bold">Salin Catatan</button>
+                </div>
+            `).join('');
+        }
+
+        function addNewNote(e) {
+            e.preventDefault();
+            appState.notes.unshift({
+                id: 'n_' + Date.now(),
+                maddah: document.getElementById('note-maddah').value,
+                author: document.getElementById('note-author').value,
+                title: document.getElementById('note-title').value,
+                date: 'Hari Ini',
+                content: document.getElementById('note-content').value
+            });
+            saveState();
+            closeModal('note-modal');
+            e.target.reset();
+            renderAll();
+            showToast('Catatan dars dipublikasikan!', 'success');
+        }
+
+        function renderQA() {
+            const filter = document.getElementById('qa-filter').value;
+            const role = appState.currentRole;
+            let list = appState.qaList;
+            if (filter === 'answered') list = list.filter(q => q.answer);
+            if (filter === 'unanswered') list = list.filter(q => !q.answer);
+
+            document.getElementById('qa-list').innerHTML = list.map(qa => `
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/40 space-y-2.5">
+                    <div class="flex justify-between text-xs"><span class="font-bold text-emerald-800">${qa.maddah} • ${qa.author}</span><span class="text-slate-400">${qa.date}</span></div>
+                    <p class="text-sm font-medium text-slate-800">"${qa.question}"</p>
+                    ${qa.answer
+                        ? `<div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-slate-700"><strong>Jawaban ${qa.answeredBy}:</strong> ${qa.answer}</div>`
+                        : (role === 'ustadz'
+                            ? `<div class="flex gap-2"><input id="ans-${qa.id}" type="text" placeholder="Tulis jawaban..." class="flex-1 rounded-xl border px-3 py-1.5 text-xs"><button onclick="answerQA('${qa.id}')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold">Jawab</button></div>`
+                            : `<span class="text-xs text-amber-700 font-medium">Menunggu jawaban Ustadz...</span>`)
+                    }
+                </div>
+            `).join('');
+        }
+
+        function submitQuestion(e) {
+            e.preventDefault();
+            const isAnon = document.getElementById('qa-anonymous').checked;
+            const st = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+            appState.qaList.unshift({
+                id: 'qa_' + Date.now(),
+                maddah: document.getElementById('qa-maddah').value,
+                author: isAnon ? 'Hamba Allah (Anonim)' : (currentSession?.name || st.name),
+                isAnonymous: isAnon,
+                date: 'Hari Ini',
+                question: document.getElementById('qa-question-text').value.trim(),
+                answer: '',
+                answeredBy: ''
+            });
+            saveState();
+            e.target.reset();
+            renderAll();
+            showToast('Pertanyaan terkirim ke Kotak Soal!', 'success');
+        }
+
+        function answerQA(id) {
+            const val = document.getElementById(`ans-${id}`)?.value.trim();
+            if (!val) return;
+            const qa = appState.qaList.find(q => q.id === id);
+            if (qa) {
+                qa.answer = val;
+                qa.answeredBy = currentSession?.name || 'Ustadz Abdullah, Lc.';
+                saveState();
+                renderAll();
+                showToast('Jawaban dipublikasikan!', 'success');
+            }
+        }
+
+        function renderPembayaran() {
+            const role = appState.currentRole;
+            const student = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+            const cfg = appState.paymentConfig;
+
+            document.getElementById('payment-ustadz-view').classList.toggle('hidden', role !== 'ustadz');
+            document.getElementById('payment-family-view').classList.toggle('hidden', role === 'ustadz');
+
+            if (role === 'ustadz') {
+                const lunas = appState.students.filter(s => s.paymentStatus === 'Lunas').length;
+                const belum = appState.students.length - lunas;
+                document.getElementById('payment-admin-stats').innerHTML = `
+                    <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200"><p class="text-xs text-emerald-700">Lunas</p><p class="text-xl font-bold text-emerald-950">${lunas} Thalib</p></div>
+                    <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200"><p class="text-xs text-rose-700">Belum / Verifikasi</p><p class="text-xl font-bold text-rose-950">${belum} Thalib</p></div>
+                    <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200"><p class="text-xs text-amber-800">Nominal Bulanan</p><p class="text-xl font-bold text-amber-950">${formatRupiah(cfg.amount)}</p></div>
+                `;
+                document.getElementById('payment-students-list').innerHTML = appState.students.map(s => `
+                    <div class="p-4 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="font-bold text-sm">${s.name}</span> <span class="text-xs px-2 py-0.5 rounded-full font-bold ${s.isPaid ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${s.paymentStatus}</span>
+                            <p class="text-xs text-slate-500">Wali: ${s.waliName} • ${s.paymentProofNote || 'Belum ada bukti transfer'}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="sendWhatsAppReminder('${s.id}')" class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold">Ingatkan WA</button>
+                            <button onclick="toggleStudentPaymentStatus('${s.id}')" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">${s.isPaid ? 'Batalkan Lunas' : 'Verifikasi Lunas'}</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('display-bank-name').textContent = cfg.bankName;
+                document.getElementById('display-bank-account').textContent = cfg.accountNumber;
+                document.getElementById('display-bank-holder').textContent = `a.n. ${cfg.accountHolder}`;
+                document.getElementById('pay-period-input').value = cfg.period;
+                document.getElementById('pay-amount-input').value = cfg.amount;
+
+                document.getElementById('family-bill-card').innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div><p class="text-xs text-slate-500">Tagihan ${cfg.period} • ${student.name}</p><h2 class="text-2xl font-extrabold text-slate-800">${formatRupiah(cfg.amount)}</h2></div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold ${student.isPaid ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${student.paymentStatus}</span>
+                    </div>
+                `;
+                document.getElementById('family-payment-history').innerHTML = (student.paymentHistory || []).map(h => `
+                    <div class="p-3 rounded-xl border bg-slate-50 flex justify-between text-xs">
+                        <span><strong>${h.period}</strong> (${formatRupiah(h.amount)})</span>
+                        <span class="font-bold text-emerald-700">${h.status}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function copyBankAccount() {
+            copyTextToClipboard(appState.paymentConfig.accountNumber.replace(/\s+/g, ''), 'Nomor rekening berhasil disalin!');
+        }
+
+        function submitPaymentConfirmation(e) {
+            e.preventDefault();
+            const st = appState.students.find(s => s.id === appState.activeStudentId) || appState.students[0];
+            st.paymentStatus = 'Menunggu Verifikasi';
+            st.paymentProofNote = `Transfer a.n. ${document.getElementById('pay-sender-input').value}`;
+            saveState();
+            renderAll();
+            showToast('Konfirmasi transfer terkirim ke admin!', 'success');
+        }
+
+        function sendWhatsAppReminder(studentId) {
+            const st = appState.students.find(s => s.id === studentId);
+            if (!st) return;
+            const cfg = appState.paymentConfig;
+            const text = `Assalamu'alaikum ${st.waliName}, pengingat Syahriyah Madrasah Al Burhan ananda ${st.name} periode ${cfg.period} sebesar ${formatRupiah(cfg.amount)} (Jatuh tempo ${cfg.dueDate}) ke ${cfg.bankName} ${cfg.accountNumber} a.n. ${cfg.accountHolder}. Jazakumullahu khairan.`;
+            window.open(`https://wa.me/${st.waliPhone}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function openPaymentSettingsModal() {
+            const cfg = appState.paymentConfig;
+            document.getElementById('set-pay-period').value = cfg.period;
+            document.getElementById('set-pay-amount').value = cfg.amount;
+            document.getElementById('set-pay-due').value = cfg.dueDate;
+            document.getElementById('set-pay-bank').value = cfg.accountNumber;
+            document.getElementById('set-pay-holder').value = cfg.accountHolder;
+            openModal('payment-settings-modal');
+        }
+
+        function savePaymentSettings(e) {
+            e.preventDefault();
+            appState.paymentConfig.period = document.getElementById('set-pay-period').value;
+            appState.paymentConfig.amount = Number(document.getElementById('set-pay-amount').value);
+            appState.paymentConfig.dueDate = document.getElementById('set-pay-due').value;
+            appState.paymentConfig.accountNumber = document.getElementById('set-pay-bank').value;
+            appState.paymentConfig.accountHolder = document.getElementById('set-pay-holder').value;
+            saveState();
+            closeModal('payment-settings-modal');
+            renderAll();
+            showToast('Pengaturan tagihan diperbarui!', 'success');
+        }
+
+        // =========================================================================
+        // NOTIFICATION CENTER
+        // =========================================================================
+        function renderNotifikasi() {
+            const role = appState.currentRole;
+            document.getElementById('btn-broadcast-notif').classList.toggle('hidden', role !== 'ustadz');
+
+            document.getElementById('notification-center-list').innerHTML = appState.notifications.map(n => `
+                <div class="p-4 rounded-2xl border ${n.read ? 'border-slate-200 bg-white' : 'border-emerald-300 bg-emerald-50/50'} flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">${n.type}</span>
+                            <span class="text-[11px] text-slate-400">${n.time}</span>
+                        </div>
+                        <h4 class="font-bold text-sm text-slate-800 mt-1">${n.title}</h4>
+                        <p class="text-xs text-slate-600 mt-0.5">${n.body}</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <a href="https://wa.me/?text=${encodeURIComponent('*[Madrasah Al Burhan]* ' + n.title + '\n' + n.body)}" target="_blank" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">Teruskan WA</a>
+                        <a href="mailto:?subject=${encodeURIComponent('[Madrasah Al Burhan] ' + n.title)}&body=${encodeURIComponent(n.body)}" class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">Email</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function markAllNotificationsRead() {
+            appState.notifications.forEach(n => n.read = true);
+            saveState();
+            renderAll();
+            showToast('Semua notifikasi ditandai sudah dibaca.', 'info');
+        }
+
+        function sendBroadcastNotification(e) {
+            e.preventDefault();
+            appState.notifications.unshift({
+                id: 'nt_' + Date.now(),
+                type: document.getElementById('bc-type').value,
+                title: document.getElementById('bc-title').value.trim(),
+                body: document.getElementById('bc-body').value.trim(),
+                time: 'Baru saja',
+                read: false
+            });
+            saveState();
+            closeModal('broadcast-modal');
+            e.target.reset();
+            renderAll();
+            showToast('Pengumuman berhasil dikirim ke seluruh pengguna!', 'success');
+        }
+
+        // =========================================================================
+        // CUSTOM FIREBASE CONFIG MODAL HANDLERS
+        // =========================================================================
+        function openCloudSettingsModal() {
+            const saved = localStorage.getItem('al_burhan_custom_firebase_cfg') || '';
+            document.getElementById('firebase-config-textarea').value = saved;
+            openModal('cloud-settings-modal');
+        }
+
+        function saveCustomFirebaseConfig(e) {
+            e.preventDefault();
+            const raw = document.getElementById('firebase-config-textarea').value.trim();
+            if (!raw) {
+                showToast('Masukkan objek JSON konfigurasi Firebase terlebih dahulu.', 'warning');
+                return;
+            }
+            try {
+                const parsed = JSON.parse(raw);
+                if (!parsed.apiKey) throw new Error('apiKey tidak ditemukan');
+                localStorage.setItem('al_burhan_custom_firebase_cfg', JSON.stringify(parsed));
+                showToast('Konfigurasi Firebase disimpan! Memuat ulang untuk menghubungkan...', 'success');
+                setTimeout(() => window.location.reload(), 1000);
+            } catch (err) {
+                showToast('Format JSON tidak valid. Pastikan tanda kutip sesuai standar JSON.', 'warning');
+            }
+        }
+
+        function resetCustomFirebaseConfig() {
+            localStorage.removeItem('al_burhan_custom_firebase_cfg');
+            showToast('Kembali ke konfigurasi bawaan. Memuat ulang...', 'info');
+            setTimeout(() => window.location.reload(), 900);
+        }
+
+        // =========================================================================
+        // MASTER RENDER & INIT
+        // =========================================================================
+        function renderAll() {
+            renderHeaderAndBanner();
+            renderDashboard();
+            renderAbsensi();
+            renderMutabaah();
+            renderUjian();
+            renderPortfolio();
+            renderLibrary();
+            renderVideos();
+            renderNotes();
+            renderQA();
+            renderPembayaran();
+            renderNotifikasi();
+            switchTab(appState.currentTab);
+            lucide.createIcons();
+        }
+
+        window.onload = function() {
+            populateRegisterStudentDropdown();
+            if (currentSession) {
+                enterPortal(currentSession);
+            } else {
+                lucide.createIcons();
+            }
+        };
+    </script>
+</body>
+</html>
